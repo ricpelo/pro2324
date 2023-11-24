@@ -14,16 +14,14 @@ def pedir_numero() -> int:
             print('El dato introducido no es un número.')
 
 
-def validar_numero(n: int, ini: int, fin: int) -> bool:
-    """Comprueba si un número está dentro de un rango."""
-    return n in range(ini, fin + 1)
-
-
 def pedir_numero_valido() -> int:
     """Solicita un número válido al usuario (entre 0 y 10)."""
+    def validar_numero(ini: int, fin: int) -> bool:
+        """Comprueba si un número está dentro de un rango."""
+        return n in range(ini, fin + 1)
     while True:
         n = pedir_numero()
-        if validar_numero(n, 0, 10):
+        if validar_numero(0, 10):
             return n
         print('El número no está comprendido entre 0 y 10.')
 

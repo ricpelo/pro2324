@@ -15,15 +15,13 @@ def recoger_numero() -> int:
             print('El dato introducido no es un número.')
 
 
-def cantidad_divisores(n: int) -> int:
-    """Devuelve la cantidad de divisores de n."""
-    return sum(1 for i in range(1, n + 1) if n % i == 0)
-
-
 def anunciar_primalidad(n: int) -> None:
     """Muestra por la salida la primalidad de n."""
+    def cantidad_divisores() -> int:
+        """Devuelve la cantidad de divisores de n."""
+        return sum(1 for i in range(1, n + 1) if n % i == 0)
     print('El número', n, 'es ', end='')
-    print('primo' if cantidad_divisores(n) == 2 else 'compuesto')
+    print('primo' if cantidad_divisores() == 2 else 'compuesto')
 
 
 numero = recoger_numero()
