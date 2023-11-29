@@ -30,9 +30,11 @@ def lista_sobre_A(ultima_fila: int):
     anterior = uno_menos[-1]
     x = [0] + anterior
     y = anterior + [0]
-    i = 0
-    ultima = []
-    while i < len(x):
-        ultima.append(x[i] + y[i])
-        i += 1
+
+    ultima = list(a + b for a, b in zip(x, y))
+
+    # ultima = []
+    # for i, e in enumerate(x):
+    #     ultima.append(e + y[i])
+
     return uno_menos + [ultima]

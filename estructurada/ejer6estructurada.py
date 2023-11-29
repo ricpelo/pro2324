@@ -28,10 +28,9 @@ def pedir_numero_valido() -> int:
 
 def imprimir_tabla_multiplicar(n: int) -> None:
     """Imprime la tabla de multiplicar de n."""
-    i = 0
-    while i <= 10:
-        print(n, 'x', i, '=', i * n)
-        i += 1
+    for i in range(11):
+        # print(n, 'x', i, '=', i * n)
+        print(f'{n:>2} x {i:>2} = {i * n:>3}')
 
 
 numero = pedir_numero_valido()

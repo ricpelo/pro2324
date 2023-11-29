@@ -8,12 +8,9 @@
 
 lista = []
 
-while len(lista) < 10:
+for _ in range(10):
     cadena = input('Introduzca una cadena: ')
     lista.append(cadena)
 
-i = len(lista) - 1
-
-while i >= 0:
-    print(lista[i])
-    i -= 1
+for e in reversed(lista):
+    print(e)
