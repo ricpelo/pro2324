@@ -34,17 +34,13 @@ import xml.etree.ElementTree as ET
 def agrupar(arbol):
     """Hace lo que dice el ejercicio."""
     raiz = arbol.getroot()
-    niveles = set()
-    for alumno in raiz.findall('alumnos/alumno'):
-        nivel = int(alumno.get('edad')) - 5
-        niveles.add(nivel)
     grupos = ET.SubElement(raiz, 'grupos')
-    for nivel in niveles:
-        ET.SubElement(grupos, 'grupo', {'nivel': str(nivel)})
     alumnos = raiz.find('alumnos')
     for alumno in raiz.findall('alumnos/alumno'):
         nivel = int(alumno.get('edad')) - 5
         grupo = raiz.find(f'grupos/grupo[@nivel="{nivel}"]')
+        if grupo is None:
+            grupo = ET.SubElement(grupos, 'grupo', {'nivel': str(nivel)})
         grupo.append(alumno)
         alumnos.remove(alumno)
     raiz.remove(alumnos)
