@@ -36,12 +36,19 @@ def validar(entrada: list[str]) -> bool:
     return voc.tipo(voc.palabra(entrada[1])) == voc.T_NOMBRE
 
 
-def decodificar(entrada: list[str]) -> tuple[str, str|None]:
+def decodificar(entrada: list[str]):
     """
     hola.
     """
     verbo = entrada[0]
     nombre = None
+
     if len(entrada) > 1:
         nombre = entrada[1]
+
+    verbo = voc.palabra(verbo)
+
+    if nombre is not None:
+        nombre = voc.palabra(nombre)
+
     return (verbo, nombre)

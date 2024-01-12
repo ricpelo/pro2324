@@ -10,6 +10,8 @@ SUR = (2, T_VERBO)
 COGER = (3, T_VERBO)
 CUCHILLO = (4, T_NOMBRE)
 OESTE = (5, T_VERBO)
+ESTE = (6, T_VERBO)
+MIRAR = (7, T_VERBO)
 
 vocabulario = {
     'N': NORTE,
@@ -18,13 +20,17 @@ vocabulario = {
     'SUR': SUR,
     'O': OESTE,
     'OESTE': OESTE,
+    'E': ESTE,
+    'ESTE': ESTE,
     'COGER': COGER,
     'COGE': COGER,
     'TOMAR': COGER,
     'TOMA': COGER,
     'RECOGER': COGER,
     'RECOGE': COGER,
-    'CUCHILLO': CUCHILLO
+    'CUCHILLO': CUCHILLO,
+    'MIRAR': MIRAR,
+    'M': MIRAR
 }
 
 

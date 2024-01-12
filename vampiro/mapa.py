@@ -9,21 +9,30 @@ import vocabulario as voc
 
 cocina = (
     'COCINA',
-    'Estás en la cocina del castillo. Esto está lleno de cacerolas y de cacharros para cocinar. Hay un horno, un fregadero y un armario pequeño.'
+    'Estás en la cocina del castillo. Esto está lleno de \
+    cacerolas y de cacharros para cocinar. Hay un horno, \
+    un fregadero y un armario pequeño.'
 )
 
 pasillo = (
     'PASILLO',
-    'Te encuentras en medio del pasillo principal de este piso. Al oeste está la cocina y al este la biblioteca. El pasillo sigue hacia el norte.',
-    {voc.OESTE: cocina}
+    'Te encuentras en medio del pasillo principal de este \
+    piso. Al oeste está la cocina y al este la biblioteca. \
+    El pasillo sigue hacia el norte.'
 )
 
 vestibulo = (
     'VESTÍBULO',
-    'Estás en el vestíbulo del castillo. El ambiente es muy húmedo y frío. Un pasillo se extiende hacia el norte. Al sur queda la puerta de entrada al castillo.',
-    {voc.NORTE: pasillo}
+    'Estás en el vestíbulo del castillo. El ambiente es muy \
+    húmedo y frío. Un pasillo se extiende hacia el norte. Al \
+    sur queda la puerta de entrada al castillo.'
 )
 
+conexiones = {
+    vestibulo: { voc.NORTE: pasillo },
+    pasillo: { voc.SUR: vestibulo, voc.OESTE: cocina },
+    cocina: { voc.ESTE: pasillo }
+}
 
 def nombre(lugar) -> str:
     """Devuelve el nombre de un lugar."""
@@ -35,12 +44,14 @@ def descripcion(lugar) -> str:
     return lugar[1]
 
 
-def destino(lugar, direccion: str):
+def destino(lugar, direccion: tuple|None):
     """
     Devuelve el destino desde un lugar hacia una dirección,
     o None si no hay salida hacia esa dirección.
     """
-    return lugar[2].get(voc.palabra(direccion))
+    if lugar in conexiones:
+        return conexiones[lugar].get(direccion)
+    return None
 
 
 def describir_lugar(lugar) -> None:

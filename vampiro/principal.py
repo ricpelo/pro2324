@@ -4,6 +4,7 @@ Módulo principal del juego del Vampiro.
 
 import mapa
 import interprete
+import vocabulario as voc
 
 def describir_lugar_actual():
     """Describe el lugar actual."""
@@ -21,10 +22,14 @@ while True:
         continue
 
     verbo, nombre = interprete.decodificar(entrada)
-
-    print(f'El verbo es {verbo} y el nombre es {nombre}.')
-
     destino = mapa.destino(lugar_actual, verbo)
+
     if destino is not None:
         lugar_actual = destino
         describir_lugar_actual()
+    elif verbo == voc.SUR and lugar_actual == mapa.vestibulo:
+        print('Ni pienses en salir de aquí sin haber completado tu misión.')
+    elif verbo == voc.MIRAR:
+        describir_lugar_actual()
+    else:
+        print('No puedes hacer eso.')
