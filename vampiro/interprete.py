@@ -5,7 +5,7 @@ su filtrado e interpretación.
 
 import vocabulario as voc
 
-def filtrar_entrada_valida(entrada: str) -> list:
+def _filtrar_entrada_valida(entrada: str) -> list:
     """
     Devuelve la entrada del jugador separando cada palabra
     y eliminando las que no pertenecen al vocabulario
@@ -19,7 +19,7 @@ def recoger_entrada_jugador():
     """
     print('¿Qué quieres hacer ahora?')
     entrada = input('> ').rstrip().upper()
-    return filtrar_entrada_valida(entrada)
+    return _filtrar_entrada_valida(entrada)
 
 
 def validar(entrada: list[str]) -> bool:
@@ -38,7 +38,8 @@ def validar(entrada: list[str]) -> bool:
 
 def decodificar(entrada: list[str]):
     """
-    hola.
+    Decodifica la entrada del jugador y la convierte en una
+    tupla (verbo, nombre).
     """
     verbo = entrada[0]
     nombre = None
