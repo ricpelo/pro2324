@@ -7,21 +7,38 @@ entre ellos y sus descripciones.
 
 import vocabulario as voc
 
-cocina = (
+def crear_lugar(nomb, descr):
+
+    def nombre():
+        return nomb
+
+    def descripcion():
+        return descr
+
+    dic = {'nombre': nombre, 'descripcion': descripcion}
+
+    def despacho(mensaje):
+        if mensaje in dic:
+            return dic[mensaje]
+        raise ValueError('Mensaje incorrecto.')
+
+    return despacho
+
+cocina = crear_lugar(
     'COCINA',
     'Estás en la cocina del castillo. Esto está lleno de \
     cacerolas y de cacharros para cocinar. Hay un horno, \
     un fregadero y un armario pequeño.'
 )
 
-pasillo = (
+pasillo = crear_lugar(
     'PASILLO',
     'Te encuentras en medio del pasillo principal de este \
     piso. Al oeste está la cocina y al este la biblioteca. \
     El pasillo sigue hacia el norte.'
 )
 
-vestibulo = (
+vestibulo = crear_lugar(
     'VESTÍBULO',
     'Estás en el vestíbulo del castillo. El ambiente es muy \
     húmedo y frío. Un pasillo se extiende hacia el norte. Al \
@@ -34,14 +51,14 @@ conexiones = {
     cocina: { voc.ESTE: pasillo }
 }
 
-def nombre(lugar) -> str:
-    """Devuelve el nombre de un lugar."""
-    return lugar[0]
+# def nombre(lugar) -> str:
+#     """Devuelve el nombre de un lugar."""
+#     return lugar[0]
 
 
-def descripcion(lugar) -> str:
-    """Devuelve la descripción de un lugar."""
-    return lugar[1]
+# def descripcion(lugar) -> str:
+#     """Devuelve la descripción de un lugar."""
+#     return lugar[1]
 
 
 def destino(lugar, direccion: tuple|None):
