@@ -10,7 +10,7 @@ def _filtrar_entrada_valida(entrada: str) -> list:
     Devuelve la entrada del jugador separando cada palabra
     y eliminando las que no pertenecen al vocabulario
     """
-    return [x for x in entrada.split() if voc.esta(x)]
+    return [x for x in entrada.split() if voc.vocabulario('esta')(x)]
 
 
 def recoger_entrada_jugador():
@@ -29,11 +29,20 @@ def validar(entrada: list[str]) -> bool:
     """
     if len(entrada) not in (1, 2):
         return False
-    if voc.tipo(voc.palabra(entrada[0])) != voc.T_VERBO:
+
+    palabra = voc.vocabulario('buscar_palabra')(entrada[0])
+    tipo = palabra('tipo')()
+
+    if tipo != voc.T_VERBO:
         return False
+
     if len(entrada) == 1:
         return True
-    return voc.tipo(voc.palabra(entrada[1])) == voc.T_NOMBRE
+
+    palabra = voc.vocabulario('buscar_palabra')(entrada[1])
+    tipo = palabra('tipo')()
+
+    return tipo == voc.T_NOMBRE
 
 
 def decodificar(entrada: list[str]):
@@ -47,9 +56,9 @@ def decodificar(entrada: list[str]):
     if len(entrada) > 1:
         nombre = entrada[1]
 
-    verbo = voc.palabra(verbo)
+    verbo = voc.vocabulario('buscar_palabra')(verbo)
 
     if nombre is not None:
-        nombre = voc.palabra(nombre)
+        nombre = voc.vocabulario('buscar_palabra')(nombre)
 
     return (verbo, nombre)
