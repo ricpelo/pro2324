@@ -15,7 +15,15 @@ def crear_lugar(nomb, descr):
     def descripcion():
         return descr
 
-    dic = {'nombre': nombre, 'descripcion': descripcion}
+    def describir_lugar() -> None:
+        print(nombre())
+        print(descripcion())
+
+    dic = {
+        'nombre': nombre,
+        'descripcion': descripcion,
+        'describir_lugar': describir_lugar
+    }
 
     def despacho(mensaje):
         if mensaje in dic:
@@ -23,6 +31,7 @@ def crear_lugar(nomb, descr):
         raise ValueError('Mensaje incorrecto.')
 
     return despacho
+
 
 cocina = crear_lugar(
     'COCINA',
@@ -45,33 +54,39 @@ vestibulo = crear_lugar(
     sur queda la puerta de entrada al castillo.'
 )
 
-conexiones = {
+
+def crear_mapa():
+    """Crea un mapa."""
+
+    conexiones = {}
+
+    def insertar_conexiones(origen, conex):
+        conexiones[origen] = conex
+
+    def destino(lugar, direccion):
+        if lugar in conexiones:
+            return conexiones[lugar].get(direccion)
+        return None
+
+    dic = {'insertar_conexiones': insertar_conexiones, 'destino': destino}
+
+    def despacho(mensaje):
+        """Despacha los mensajes."""
+        if mensaje in dic:
+            return dic[mensaje]
+        raise ValueError('Mensaje incorrecto.')
+
+    return despacho
+
+
+_con = {
     vestibulo: { voc.NORTE: pasillo },
     pasillo: { voc.SUR: vestibulo, voc.OESTE: cocina },
     cocina: { voc.ESTE: pasillo }
 }
 
-# def nombre(lugar) -> str:
-#     """Devuelve el nombre de un lugar."""
-#     return lugar[0]
+mapa = crear_mapa()
+_insertar_conexiones = mapa('insertar_conexiones')
 
-
-# def descripcion(lugar) -> str:
-#     """Devuelve la descripción de un lugar."""
-#     return lugar[1]
-
-
-def destino(lugar, direccion: tuple|None):
-    """
-    Devuelve el destino desde un lugar hacia una dirección,
-    o None si no hay salida hacia esa dirección.
-    """
-    if lugar in conexiones:
-        return conexiones[lugar].get(direccion)
-    return None
-
-
-def describir_lugar(lugar) -> None:
-    """Describe el lugar al jugador."""
-    print(nombre(lugar))
-    print(descripcion(lugar))
+for k, v in _con.items():
+    _insertar_conexiones(k, v)

@@ -92,7 +92,7 @@ OESTE = crear_palabra('OESTE', T_VERBO)
 ESTE = crear_palabra('ESTE', T_VERBO)
 MIRAR = crear_palabra('MIRAR', T_VERBO)
 
-entradas_vocabulario = {
+_entradas_vocabulario = {
     'N': NORTE,
     'NORTE': NORTE,
     'S': SUR,
@@ -115,5 +115,5 @@ entradas_vocabulario = {
 vocabulario = crear_vocabulario()
 _insertar = vocabulario('insertar_entrada')
 
-for k, v in entradas_vocabulario.items():
+for k, v in _entradas_vocabulario.items():
     _insertar(k, v)
