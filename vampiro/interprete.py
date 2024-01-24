@@ -5,15 +5,15 @@ su filtrado e interpretación.
 
 import vocabulario as voc
 
-def _filtrar_entrada_valida(entrada: str) -> list:
+def _filtrar_entrada_valida(entrada: str) -> list[str]:
     """
     Devuelve la entrada del jugador separando cada palabra
     y eliminando las que no pertenecen al vocabulario
     """
-    return [x for x in entrada.split() if voc.vocabulario('esta')(x)]
+    return [x for x in entrada.split() if voc.vocabulario.esta(x)]
 
 
-def recoger_entrada_jugador():
+def recoger_entrada_jugador() -> list[str]:
     """
     Solicita al jugador la siguiente entrada.
     """
@@ -30,35 +30,27 @@ def validar(entrada: list[str]) -> bool:
     if len(entrada) not in (1, 2):
         return False
 
-    palabra = voc.vocabulario('buscar_palabra')(entrada[0])
-    tipo = palabra('tipo')()
+    palabra = voc.vocabulario.buscar_palabra(entrada[0])
 
-    if tipo != voc.T_VERBO:
+    if palabra.tipo() != voc.T_VERBO:
         return False
 
     if len(entrada) == 1:
         return True
 
-    palabra = voc.vocabulario('buscar_palabra')(entrada[1])
-    tipo = palabra('tipo')()
-
-    return tipo == voc.T_NOMBRE
+    palabra = voc.vocabulario.buscar_palabra(entrada[1])
+    return palabra.tipo() == voc.T_NOMBRE
 
 
-def decodificar(entrada: list[str]):
+def decodificar(entrada: list[str]) -> tuple[voc.Palabra,voc.Palabra|None]:
     """
     Decodifica la entrada del jugador y la convierte en una
     tupla (verbo, nombre).
     """
-    verbo = entrada[0]
+    verbo = voc.vocabulario.buscar_palabra(entrada[0])
     nombre = None
 
     if len(entrada) > 1:
-        nombre = entrada[1]
-
-    verbo = voc.vocabulario('buscar_palabra')(verbo)
-
-    if nombre is not None:
-        nombre = voc.vocabulario('buscar_palabra')(nombre)
+        nombre = voc.vocabulario.buscar_palabra(entrada[1])
 
     return (verbo, nombre)

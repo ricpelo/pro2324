@@ -2,97 +2,73 @@
 El vocabulario del juego.
 """
 
-def crear_tipo_palabra(etiq):
-    """Crea un nuevo tipo de palabra."""
+class TipoPalabra:
+    """Un tipo de palabra."""
 
-    def etiqueta():
-        return etiq
+    def __init__(self, etiqueta: str) -> None:
+        self._etiqueta = etiqueta
 
-    def despacho(mensaje):
-        if mensaje == 'etiqueta':
-            return etiqueta
-        raise ValueError('Mensaje incorrecto.')
-
-    return despacho
-
-
-def crear_palabra(etiq, tipo_pal):
-    """Crea una nueva palabra."""
-
-    def etiqueta():
+    def etiqueta(self):
         """Devuelve la etiqueta de la palabra."""
-        return etiq
+        return self._etiqueta
 
-    def tipo():
+
+class Palabra:
+    """Una palabra del diccionario."""
+
+    def __init__(self, etiqueta: str, tipo_palabra: TipoPalabra) -> None:
+        self._etiqueta = etiqueta
+        self._tipo_palabra = tipo_palabra
+
+    def etiqueta(self) -> str:
+        """Devuelve la etiqueta de la palabra."""
+        return self._etiqueta
+
+    def tipo(self) -> TipoPalabra:
         """Devuelve el tipo de la palabra."""
-        return tipo_pal
-
-    dic = {
-        'etiqueta': etiqueta,
-        'tipo': tipo
-    }
-
-    def despacho(mensaje):
-        """Despacha los mensajes."""
-        if mensaje in dic:
-            return dic[mensaje]
-        raise ValueError('Mensaje incorrecto.')
-
-    return despacho
+        return self._tipo_palabra
 
 
-def crear_vocabulario():
-    """Crea un nuevo vocabulario."""
+class Vocabulario:
+    """El vocabulario de las palabras que entiende la aventura."""
 
-    entradas = {}
+    def __init__(self) -> None:
+        self._entradas: dict[str, Palabra] = {}
 
-    def insertar_entrada(lexema, palabra):
-        """Inserta una entrada en el vocabulario."""
-        entradas[lexema] = palabra
+    def insertar_entrada(self, lexema: str, palabra: Palabra) -> None:
+        """Inserta una palabra en el vocabulario."""
+        self._entradas[lexema] = palabra
 
-    def esta(lexema):
+    def esta(self, lexema: str) -> bool:
         """
         Comprueba si hay una entrada en el vocabulario
         con ese lexema.
         """
-        return lexema in entradas
+        return lexema in self._entradas
 
-    def buscar_palabra(lexema):
+    def buscar_palabra(self, lexema: str) -> Palabra:
         """
         Devuelve la palabra asociada al lexema en el
         vocabulario.
         """
-        if esta(lexema):
-            return entradas[lexema]
-        raise ValueError('Palabra inexistente.')
-
-    dic = {
-        'insertar_entrada': insertar_entrada,
-        'esta': esta,
-        'buscar_palabra': buscar_palabra
-    }
-
-    def despacho(mensaje):
-        """Despacha los mensajes."""
-        if mensaje in dic:
-            return dic[mensaje]
-        raise ValueError('Mensaje incorrecto.')
-
-    return despacho
+        try:
+            return self._entradas[lexema]
+        except KeyError as exc:
+            raise ValueError('Palabra inexistente.') from exc
 
 
-T_VERBO = crear_tipo_palabra('verbo')
-T_NOMBRE = crear_tipo_palabra('nombre')
+T_VERBO = TipoPalabra('verbo')
+T_NOMBRE = TipoPalabra('nombre')
 
-NORTE = crear_palabra('NORTE', T_VERBO)
-SUR = crear_palabra('SUR', T_VERBO)
-COGER = crear_palabra('COGER', T_VERBO)
-CUCHILLO = crear_palabra('CUCHILLO', T_NOMBRE)
-OESTE = crear_palabra('OESTE', T_VERBO)
-ESTE = crear_palabra('ESTE', T_VERBO)
-MIRAR = crear_palabra('MIRAR', T_VERBO)
+NORTE = Palabra('NORTE', T_VERBO)
+SUR = Palabra('SUR', T_VERBO)
+COGER = Palabra('COGER', T_VERBO)
+CUCHILLO = Palabra('CUCHILLO', T_NOMBRE)
+OESTE = Palabra('OESTE', T_VERBO)
+ESTE = Palabra('ESTE', T_VERBO)
+MIRAR = Palabra('MIRAR', T_VERBO)
 
-_entradas_vocabulario = {
+_entradas_vocabulario: dict[str,Palabra] = {
     'N': NORTE,
     'NORTE': NORTE,
     'S': SUR,
@@ -112,8 +88,7 @@ _entradas_vocabulario = {
     'M': MIRAR
 }
 
-vocabulario = crear_vocabulario()
-_insertar = vocabulario('insertar_entrada')
+vocabulario = Vocabulario()
 
 for k, v in _entradas_vocabulario.items():
-    _insertar(k, v)
+    vocabulario.insertar_entrada(k, v)

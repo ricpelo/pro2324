@@ -10,19 +10,19 @@ import vocabulario as voc
 class Lugar:
     """Los lugares del mapa del juego."""
 
-    def __init__(self, nombre, descripcion):
+    def __init__(self, nombre: str, descripcion: str) -> None:
         self._nombre = nombre
         self._descripcion = descripcion
 
-    def nombre(self):
+    def nombre(self) -> str:
         """Devuelve el nombre del lugar."""
         return self._nombre
 
-    def descripcion(self):
+    def descripcion(self) -> str:
         """Devuelve la descripción del lugar."""
         return self._descripcion
 
-    def describir_lugar(self):
+    def describir_lugar(self) -> None:
         """Imprime por la salida el nombre y la descripción del lugar."""
         print(self.nombre())
         print(self.descripcion())
@@ -32,16 +32,20 @@ class Mapa:
     """El mapa de la aventura."""
 
     def __init__(self):
-        self.conexiones = {}
+        self.conexiones: dict[Lugar,dict[voc.Palabra,Lugar]] = {}
 
-    def insertar_conexiones(self, origen, conex):
+    def insertar_conexiones(
+        self,
+        origen: Lugar,
+        conex: dict[voc.Palabra,Lugar]
+    ) -> None:
         """
         Inserta en el mapa una o varias conexiones entre el lugar (self)
         y otros lugares.
         """
         self.conexiones[origen] = conex
 
-    def destino(self, lugar, direccion):
+    def destino(self, lugar: Lugar, direccion: voc.Palabra) -> Lugar|None:
         """
         Devuelve el destino desde el lugar hacia la dirección (si existe).
         En caso contrario, devuelve None.
