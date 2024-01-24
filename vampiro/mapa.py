@@ -7,47 +7,68 @@ entre ellos y sus descripciones.
 
 import vocabulario as voc
 
-def crear_lugar(nomb, descr):
+class Lugar:
+    """Los lugares del mapa del juego."""
 
-    def nombre():
-        return nomb
+    def __init__(self, nombre, descripcion):
+        self._nombre = nombre
+        self._descripcion = descripcion
 
-    def descripcion():
-        return descr
+    def nombre(self):
+        """Devuelve el nombre del lugar."""
+        return self._nombre
 
-    def describir_lugar() -> None:
-        print(nombre())
-        print(descripcion())
+    def descripcion(self):
+        """Devuelve la descripción del lugar."""
+        return self._descripcion
 
-    dic = {
-        'nombre': nombre,
-        'descripcion': descripcion,
-        'describir_lugar': describir_lugar
-    }
-
-    def despacho(mensaje):
-        if mensaje in dic:
-            return dic[mensaje]
-        raise ValueError('Mensaje incorrecto.')
-
-    return despacho
+    def describir_lugar(self):
+        """Imprime por la salida el nombre y la descripción del lugar."""
+        print(self.nombre())
+        print(self.descripcion())
 
 
-cocina = crear_lugar(
+cocina = Lugar(
     'COCINA',
     'Estás en la cocina del castillo. Esto está lleno de \
     cacerolas y de cacharros para cocinar. Hay un horno, \
     un fregadero y un armario pequeño.'
 )
 
-pasillo = crear_lugar(
+
+# def crear_lugar(nomb, descr):
+#     def nombre():
+#         return nomb
+
+#     def descripcion():
+#         return descr
+
+#     def describir_lugar() -> None:
+#         print(nombre())
+#         print(descripcion())
+
+#     dic = {
+#         'nombre': nombre,
+#         'descripcion': descripcion,
+#         'describir_lugar': describir_lugar
+#     }
+
+#     def despacho(mensaje):
+#         if mensaje in dic:
+#             return dic[mensaje]
+#         raise ValueError('Mensaje incorrecto.')
+
+#     return despacho
+
+
+pasillo = Lugar(
     'PASILLO',
     'Te encuentras en medio del pasillo principal de este \
     piso. Al oeste está la cocina y al este la biblioteca. \
     El pasillo sigue hacia el norte.'
 )
 
-vestibulo = crear_lugar(
+vestibulo = Lugar(
     'VESTÍBULO',
     'Estás en el vestíbulo del castillo. El ambiente es muy \
     húmedo y frío. Un pasillo se extiende hacia el norte. Al \
