@@ -8,7 +8,7 @@ import vocabulario as voc
 
 def describir_lugar_actual():
     """Describe el lugar actual."""
-    lugar_actual('describir_lugar')()
+    lugar_actual.describir_lugar()
 
 
 lugar_actual = mapa.vestibulo
@@ -23,7 +23,7 @@ while True:
         continue
 
     verbo, nombre = interprete.decodificar(entrada)
-    destino = mapa.mapa('destino')(lugar_actual, verbo)
+    destino = mapa.mapa.destino(lugar_actual, verbo)
 
     if destino is not None:
         lugar_actual = destino

@@ -28,38 +28,35 @@ class Lugar:
         print(self.descripcion())
 
 
+class Mapa:
+    """El mapa de la aventura."""
+
+    def __init__(self):
+        self.conexiones = {}
+
+    def insertar_conexiones(self, origen, conex):
+        """
+        Inserta en el mapa una o varias conexiones entre el lugar (self)
+        y otros lugares.
+        """
+        self.conexiones[origen] = conex
+
+    def destino(self, lugar, direccion):
+        """
+        Devuelve el destino desde el lugar hacia la dirección (si existe).
+        En caso contrario, devuelve None.
+        """
+        if lugar in self.conexiones:
+            return self.conexiones[lugar].get(direccion)
+        return None
+
+
 cocina = Lugar(
     'COCINA',
     'Estás en la cocina del castillo. Esto está lleno de \
     cacerolas y de cacharros para cocinar. Hay un horno, \
     un fregadero y un armario pequeño.'
 )
-
-
-# def crear_lugar(nomb, descr):
-#     def nombre():
-#         return nomb
-
-#     def descripcion():
-#         return descr
-
-#     def describir_lugar() -> None:
-#         print(nombre())
-#         print(descripcion())
-
-#     dic = {
-#         'nombre': nombre,
-#         'descripcion': descripcion,
-#         'describir_lugar': describir_lugar
-#     }
-
-#     def despacho(mensaje):
-#         if mensaje in dic:
-#             return dic[mensaje]
-#         raise ValueError('Mensaje incorrecto.')
-
-#     return despacho
-
 
 pasillo = Lugar(
     'PASILLO',
@@ -75,39 +72,13 @@ vestibulo = Lugar(
     sur queda la puerta de entrada al castillo.'
 )
 
-
-def crear_mapa():
-    """Crea un mapa."""
-
-    conexiones = {}
-
-    def insertar_conexiones(origen, conex):
-        conexiones[origen] = conex
-
-    def destino(lugar, direccion):
-        if lugar in conexiones:
-            return conexiones[lugar].get(direccion)
-        return None
-
-    dic = {'insertar_conexiones': insertar_conexiones, 'destino': destino}
-
-    def despacho(mensaje):
-        """Despacha los mensajes."""
-        if mensaje in dic:
-            return dic[mensaje]
-        raise ValueError('Mensaje incorrecto.')
-
-    return despacho
-
-
 _con = {
     vestibulo: { voc.NORTE: pasillo },
     pasillo: { voc.SUR: vestibulo, voc.OESTE: cocina },
     cocina: { voc.ESTE: pasillo }
 }
 
-mapa = crear_mapa()
-_insertar_conexiones = mapa('insertar_conexiones')
+mapa = Mapa()
 
 for k, v in _con.items():
-    _insertar_conexiones(k, v)
+    mapa.insertar_conexiones(k, v)
