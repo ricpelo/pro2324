@@ -67,6 +67,7 @@ CUCHILLO = Palabra('CUCHILLO', T_NOMBRE)
 OESTE = Palabra('OESTE', T_VERBO)
 ESTE = Palabra('ESTE', T_VERBO)
 MIRAR = Palabra('MIRAR', T_VERBO)
+INVENTARIO = Palabra('INVENTARIO', T_VERBO)
 
 _entradas_vocabulario: dict[str,Palabra] = {
     'N': NORTE,
@@ -85,7 +86,8 @@ _entradas_vocabulario: dict[str,Palabra] = {
     'RECOGE': COGER,
     'CUCHILLO': CUCHILLO,
     'MIRAR': MIRAR,
-    'M': MIRAR
+    'M': MIRAR,
+    'I': INVENTARIO,
 }
 
 vocabulario = Vocabulario()

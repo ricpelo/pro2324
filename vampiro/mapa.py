@@ -13,6 +13,7 @@ class Lugar:
     def __init__(self, nombre: str, descripcion: str) -> None:
         self._nombre = nombre
         self._descripcion = descripcion
+        self._items = set()
 
     def nombre(self) -> str:
         """Devuelve el nombre del lugar."""
@@ -22,10 +23,26 @@ class Lugar:
         """Devuelve la descripción del lugar."""
         return self._descripcion
 
+    def meter_item(self, item) -> None:
+        self._items.add(item)
+
+    def sacar_item(self, item) -> None:
+        self._items.remove(item)
+
+    def listar_items(self) -> None:
+        for item in self._items:
+            print(f'{item.nombre()}.')
+
     def describir_lugar(self) -> None:
-        """Imprime por la salida el nombre y la descripción del lugar."""
+        """
+        Imprime por la salida el nombre y la descripción del
+        lugar.
+        """
         print(self.nombre())
         print(self.descripcion())
+        if len(self._items) > 0:
+            print('También puedes ver:')
+            self.listar_items()
 
 
 class Mapa:
@@ -55,6 +72,43 @@ class Mapa:
         return None
 
 
+class Item:
+    """
+    Los ítems u objetos del juego.
+    """
+
+    def __init__(
+        self,
+        nombre: str,
+        descripcion: str,
+        inicial: Lugar,
+        palabra: voc.Palabra
+    ) -> None:
+        self._nombre = nombre
+        self._descripcion = descripcion
+        self._lugar = inicial
+        self._palabra = palabra
+        self._lugar.meter_item(self)
+
+    def nombre(self) -> str:
+        return self._nombre
+
+    def descripcion(self) -> str:
+        return self._descripcion
+
+    def lugar(self) -> Lugar:
+        return self._lugar
+
+    def palabra(self) -> voc.Palabra:
+        return self._palabra
+
+    def coger(self):
+        if self._lugar is not None:
+            self._lugar.sacar_item(self)
+        self._lugar = inventario
+        inventario.meter_item(self)
+
+
 cocina = Lugar(
     'COCINA',
     'Estás en la cocina del castillo. Esto está lleno de \
@@ -75,6 +129,9 @@ vestibulo = Lugar(
     húmedo y frío. Un pasillo se extiende hacia el norte. Al \
     sur queda la puerta de entrada al castillo.'
 )
+
+inventario = Lugar('', '')
+limbo = Lugar('', '')
 
 _con = {
     vestibulo: { voc.NORTE: pasillo },
