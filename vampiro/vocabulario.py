@@ -8,6 +8,11 @@ class TipoPalabra:
     def __init__(self, etiqueta: str) -> None:
         self._etiqueta = etiqueta
 
+    def __eq__(self, __value: object) -> bool:
+        if type(self) != type(__value):
+            return NotImplemented
+        return self._etiqueta == __value._etiqueta
+
     def etiqueta(self):
         """Devuelve la etiqueta de la palabra."""
         return self._etiqueta
@@ -19,6 +24,12 @@ class Palabra:
     def __init__(self, etiqueta: str, tipo_palabra: TipoPalabra) -> None:
         self._etiqueta = etiqueta
         self._tipo_palabra = tipo_palabra
+
+    def __eq__(self, __value: object) -> bool:
+        if type(self) != type(__value):
+            return NotImplemented
+        return self._etiqueta == __value._etiqueta and \
+            self._tipo_palabra == __value._tipo_palabra
 
     def etiqueta(self) -> str:
         """Devuelve la etiqueta de la palabra."""

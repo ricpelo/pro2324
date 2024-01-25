@@ -4,6 +4,35 @@ Números racionales.
 
 from math import gcd
 
+class Racional:
+    """Clase de números racionales."""
+
+    def __init__(self, numer: int, denom: int) -> None:
+        g = gcd(numer, denom)
+        self._numer = numer // g
+        self._denom = denom // g
+
+    def __eq__(self, __value: object) -> bool:
+        if type(self) != type(__value):
+            return NotImplemented
+        return self.numer() * __value.denom() == __value.numer() * self.denom()
+
+    def numer(self) -> int:
+        return self._numer
+
+    def denom(self) -> int:
+        return self._denom
+
+    def suma(self, otro):
+        nx, dx = self.numer(), self.denom()
+        ny, dy = otro.numer(), otro.denom()
+        return Racional(nx * dy + ny * dx, dx * dy)
+
+    def imprimir(self):
+        """Imprime un racional por la salida."""
+        print(self.numer(), '/', self.denom(), sep='')
+
+
 def racional(n, d):
     """Un racional es una lista que contiene el numerador y el denominador."""
     g = gcd(n, d)
