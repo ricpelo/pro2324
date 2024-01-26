@@ -13,7 +13,7 @@ class Lugar:
     def __init__(self, nombre: str, descripcion: str) -> None:
         self._nombre = nombre
         self._descripcion = descripcion
-        self._items = set()
+        self._items: set[Item] = set()
 
     def nombre(self) -> str:
         """Devuelve el nombre del lugar."""

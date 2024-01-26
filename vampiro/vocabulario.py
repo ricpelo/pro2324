@@ -13,6 +13,12 @@ class TipoPalabra:
             return NotImplemented
         return self._etiqueta == __value._etiqueta
 
+    def __hash__(self) -> int:
+        return hash(self._etiqueta)
+
+    def __repr__(self) -> str:
+        return f'TipoPalabra({self._etiqueta!r})'
+
     def etiqueta(self):
         """Devuelve la etiqueta de la palabra."""
         return self._etiqueta
@@ -31,6 +37,12 @@ class Palabra:
         return self._etiqueta == __value._etiqueta and \
             self._tipo_palabra == __value._tipo_palabra
 
+    def __hash__(self) -> int:
+        return hash((self._etiqueta, self._tipo_palabra))
+
+    def __repr__(self) -> str:
+        return f'Palabra({self._etiqueta!r}, {self._tipo_palabra!r})'
+
     def etiqueta(self) -> str:
         """Devuelve la etiqueta de la palabra."""
         return self._etiqueta
@@ -43,8 +55,16 @@ class Palabra:
 class Vocabulario:
     """El vocabulario de las palabras que entiende la aventura."""
 
-    def __init__(self) -> None:
-        self._entradas: dict[str, Palabra] = {}
+    def __init__(self, _entradas = {}) -> None:
+        self._entradas: dict[str, Palabra] = _entradas
+
+    def __eq__(self, __value: object) -> bool:
+        if type(self) != type(__value):
+            return NotImplemented
+        return self._entradas == __value._entradas
+
+    def __repr__(self) -> str:
+        return f'Vocabulario({self._entradas!r})'
 
     def insertar_entrada(self, lexema: str, palabra: Palabra) -> None:
         """Inserta una palabra en el vocabulario."""

@@ -17,6 +17,15 @@ class Racional:
             return NotImplemented
         return self.numer() * __value.denom() == __value.numer() * self.denom()
 
+    def __hash__(self) -> int:
+        return hash((self._numer, self._denom))
+
+    def __repr__(self) -> str:
+        return f'Racional({self._numer}, {self._denom})'
+
+    def __str__(self) -> str:
+        return f'{self.numer()}/{self.denom()}'
+
     def numer(self) -> int:
         return self._numer
 
