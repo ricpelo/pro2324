@@ -19,6 +19,9 @@ class TipoPalabra:
     def __repr__(self) -> str:
         return f'TipoPalabra({self._etiqueta!r})'
 
+    def __str__(self) -> str:
+        return self._etiqueta
+
     def etiqueta(self):
         """Devuelve la etiqueta de la palabra."""
         return self._etiqueta
@@ -27,9 +30,12 @@ class TipoPalabra:
 class Palabra:
     """Una palabra del diccionario."""
 
+    cantidad = 0
+
     def __init__(self, etiqueta: str, tipo_palabra: TipoPalabra) -> None:
         self._etiqueta = etiqueta
         self._tipo_palabra = tipo_palabra
+        Palabra.cantidad += 1
 
     def __eq__(self, __value: object) -> bool:
         if type(self) != type(__value):
@@ -42,6 +48,9 @@ class Palabra:
 
     def __repr__(self) -> str:
         return f'Palabra({self._etiqueta!r}, {self._tipo_palabra!r})'
+
+    def __str__(self) -> str:
+        return f'Palabra {self._etiqueta}, de tipo {self._tipo_palabra!s}'
 
     def etiqueta(self) -> str:
         """Devuelve la etiqueta de la palabra."""
@@ -57,6 +66,7 @@ class Vocabulario:
 
     def __init__(self, _entradas = {}) -> None:
         self._entradas: dict[str, Palabra] = _entradas
+        assert len(_entradas) >= 0
 
     def __eq__(self, __value: object) -> bool:
         if type(self) != type(__value):
@@ -68,7 +78,16 @@ class Vocabulario:
 
     def insertar_entrada(self, lexema: str, palabra: Palabra) -> None:
         """Inserta una palabra en el vocabulario."""
+        cantidad_antes = self.cantidad()
         self._entradas[lexema] = palabra
+        cantidad_despues = self.cantidad()
+        assert cantidad_despues - cantidad_antes in range(0, 2)
+
+    def cantidad(self) -> int:
+        """Devuelve la cantidad de palabras que contiene el vocabulario."""
+        longitud = len(self._entradas)
+        assert longitud >= 0
+        return longitud
 
     def esta(self, lexema: str) -> bool:
         """

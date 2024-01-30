@@ -5,12 +5,17 @@ Números racionales.
 from math import gcd
 
 class Racional:
-    """Clase de números racionales."""
+    """
+    Clase de números racionales.
+
+    Invariante: El denominador no puede ser cero.
+    """
 
     def __init__(self, numer: int, denom: int) -> None:
         g = gcd(numer, denom)
-        self._numer = numer // g
-        self._denom = denom // g
+        self.__set_numer(numer // g)
+        self.__set_denom(denom // g)
+        assert self.numer() * denom == self.denom() * numer
 
     def __eq__(self, __value: object) -> bool:
         if type(self) != type(__value):
@@ -18,19 +23,27 @@ class Racional:
         return self.numer() * __value.denom() == __value.numer() * self.denom()
 
     def __hash__(self) -> int:
-        return hash((self._numer, self._denom))
+        return hash((self.__numer, self.__denom))
 
     def __repr__(self) -> str:
-        return f'Racional({self._numer}, {self._denom})'
+        return f'Racional({self.__numer}, {self.__denom})'
 
     def __str__(self) -> str:
         return f'{self.numer()}/{self.denom()}'
 
     def numer(self) -> int:
-        return self._numer
+        return self.__numer
 
     def denom(self) -> int:
-        return self._denom
+        return self.__denom
+
+    def __set_numer(self, numer) -> None:
+        self.__numer = numer
+
+    def __set_denom(self, denom) -> None:
+        if denom == 0:
+            raise ValueError('El denominador no puede ser cero.')
+        self.__denom = denom
 
     def suma(self, otro):
         nx, dx = self.numer(), self.denom()
