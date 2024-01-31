@@ -30,15 +30,15 @@ class TipoPalabra:
 class Palabra:
     """Una palabra del diccionario."""
 
-    cantidad = 0
-    entradas_vocabulario = {}
+    __cantidad = 0
+    __entradas_vocabulario = {}
 
     def __init__(self, tipo_palabra: TipoPalabra, lexemas: list[str]) -> None:
         self.__tipo_palabra = tipo_palabra
         self.__lexemas = lexemas
-        Palabra.cantidad += 1
+        Palabra.__cantidad += 1
         for lexema in lexemas:
-            Palabra.entradas_vocabulario[lexema] = self
+            Palabra.__entradas_vocabulario[lexema] = self
 
     def __eq__(self, __value: object) -> bool:
         if type(self) != type(__value):
@@ -62,6 +62,14 @@ class Palabra:
     def tipo(self) -> TipoPalabra:
         """Devuelve el tipo de la palabra."""
         return self.__tipo_palabra
+
+    @staticmethod
+    def cantidad():
+        return Palabra.__cantidad
+
+    @staticmethod
+    def entradas_vocabulario():
+        return Palabra.__entradas_vocabulario.copy()
 
 
 class Vocabulario:
@@ -122,4 +130,4 @@ ESTE = Palabra(T_VERBO, ['ESTE', 'E'])
 MIRAR = Palabra(T_VERBO, ['MIRAR', 'M'])
 INVENTARIO = Palabra(T_VERBO, ['INVENTARIO', 'I'])
 
-vocabulario = Vocabulario(Palabra.entradas_vocabulario)
+vocabulario = Vocabulario(Palabra.entradas_vocabulario())
