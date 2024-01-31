@@ -31,34 +31,37 @@ class Palabra:
     """Una palabra del diccionario."""
 
     cantidad = 0
+    entradas_vocabulario = {}
 
-    def __init__(self, etiqueta: str, tipo_palabra: TipoPalabra) -> None:
-        self._etiqueta = etiqueta
-        self._tipo_palabra = tipo_palabra
+    def __init__(self, tipo_palabra: TipoPalabra, lexemas: list[str]) -> None:
+        self.__tipo_palabra = tipo_palabra
+        self.__lexemas = lexemas
         Palabra.cantidad += 1
+        for lexema in lexemas:
+            Palabra.entradas_vocabulario[lexema] = self
 
     def __eq__(self, __value: object) -> bool:
         if type(self) != type(__value):
             return NotImplemented
-        return self._etiqueta == __value._etiqueta and \
-            self._tipo_palabra == __value._tipo_palabra
+        return self.etiqueta() == __value.etiqueta() and \
+            self.tipo() == __value.tipo()
 
     def __hash__(self) -> int:
-        return hash((self._etiqueta, self._tipo_palabra))
+        return hash((self.etiqueta(), self.tipo()))
 
     def __repr__(self) -> str:
-        return f'Palabra({self._etiqueta!r}, {self._tipo_palabra!r})'
+        return f'Palabra({self.etiqueta()!r}, {self.tipo()!r})'
 
     def __str__(self) -> str:
-        return f'Palabra {self._etiqueta}, de tipo {self._tipo_palabra!s}'
+        return f'Palabra {self.etiqueta()}, de tipo {self.tipo()!s}'
 
     def etiqueta(self) -> str:
         """Devuelve la etiqueta de la palabra."""
-        return self._etiqueta
+        return self.__lexemas[0]
 
     def tipo(self) -> TipoPalabra:
         """Devuelve el tipo de la palabra."""
-        return self._tipo_palabra
+        return self.__tipo_palabra
 
 
 class Vocabulario:
@@ -110,37 +113,13 @@ class Vocabulario:
 T_VERBO = TipoPalabra('verbo')
 T_NOMBRE = TipoPalabra('nombre')
 
-NORTE = Palabra('NORTE', T_VERBO)
-SUR = Palabra('SUR', T_VERBO)
-COGER = Palabra('COGER', T_VERBO)
-CUCHILLO = Palabra('CUCHILLO', T_NOMBRE)
-OESTE = Palabra('OESTE', T_VERBO)
-ESTE = Palabra('ESTE', T_VERBO)
-MIRAR = Palabra('MIRAR', T_VERBO)
-INVENTARIO = Palabra('INVENTARIO', T_VERBO)
+NORTE = Palabra(T_VERBO, ['NORTE', 'N'])
+SUR = Palabra(T_VERBO, ['SUR', 'S'])
+COGER = Palabra(T_VERBO, ['COGER', 'COGE', 'TOMAR', 'TOMA', 'RECOGER', 'RECOGE'])
+CUCHILLO = Palabra(T_NOMBRE, ['CUCHILLO'])
+OESTE = Palabra(T_VERBO, ['OESTE', 'O'])
+ESTE = Palabra(T_VERBO, ['ESTE', 'E'])
+MIRAR = Palabra(T_VERBO, ['MIRAR', 'M'])
+INVENTARIO = Palabra(T_VERBO, ['INVENTARIO', 'I'])
 
-_entradas_vocabulario: dict[str,Palabra] = {
-    'N': NORTE,
-    'NORTE': NORTE,
-    'S': SUR,
-    'SUR': SUR,
-    'O': OESTE,
-    'OESTE': OESTE,
-    'E': ESTE,
-    'ESTE': ESTE,
-    'COGER': COGER,
-    'COGE': COGER,
-    'TOMAR': COGER,
-    'TOMA': COGER,
-    'RECOGER': COGER,
-    'RECOGE': COGER,
-    'CUCHILLO': CUCHILLO,
-    'MIRAR': MIRAR,
-    'M': MIRAR,
-    'I': INVENTARIO,
-}
-
-vocabulario = Vocabulario()
-
-for k, v in _entradas_vocabulario.items():
-    vocabulario.insertar_entrada(k, v)
+vocabulario = Vocabulario(Palabra.entradas_vocabulario)
