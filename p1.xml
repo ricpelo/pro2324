@@ -1,0 +1,23 @@
+<raiz>
+    <funcion>
+        <nombre>suma</nombre>
+        <docstring>Función que suma tres números</docstring>
+        <parametros>
+            <parametro>x</parametro>
+            <parametro>y</parametro>
+            <parametro>z</parametro>
+        </parametros>
+        <cuerpo>
+w = x + y + z
+return w
+        </cuerpo>
+    </funcion>
+    <funcion>
+        <nombre>hola</nombre>
+        <parametros>
+        </parametros>
+        <cuerpo>
+print('Hola')
+        </cuerpo>
+    </funcion>
+</raiz>
