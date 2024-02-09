@@ -2,7 +2,20 @@
 Definiciones de clases del banco.
 """
 
-class Cliente:
+from abc import ABC, abstractmethod
+
+class Base(ABC):
+    def get_id(self):
+        return self._id
+
+    def set_id(self, _id):
+        self._id = _id
+
+    @abstractmethod
+    def __str__(self) -> str:
+        ...
+
+class Cliente(Base):
     """Un cliente del banco."""
 
     def __init__(
@@ -14,6 +27,9 @@ class Cliente:
         self.set_dni(dni)
         self.set_nombre(nombre)
         self.set_apellidos(apellidos)
+
+    def __str__(self) -> str:
+        return f'{self.nombre()} {self.apellidos()} ({self.dni()})'
 
     def set_dni(self, dni: str) -> None:
         # Comprobar la letra del DNI
@@ -49,7 +65,7 @@ class Movimiento:
         return self.__cantidad
 
 
-class Cuenta:
+class Cuenta(Base):
     """
     Una cuenta del banco.
 
