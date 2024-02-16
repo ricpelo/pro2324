@@ -22,13 +22,17 @@ class Numero:
     def numero(self) -> str:
         return self.__numero
 
+    def valor(self) -> int:
+        try:
+            num = self.numero()
+            return int(num)
+        except ValueError:
+            return {'J': 11, 'Q': 12, 'K': 13, 'As': 14}[num]
 
 class Palo:
-    def __init__(self, _palo: str) -> None:
+    def __init__(self, _palo: str, _valor: int) -> None:
         self.__palo = _palo
-
-    def palo(self) -> str:
-        return self.__palo
+        self.__valor = _valor
 
     def __repr__(self) -> str:
         return f'Palo({self.palo()!r})'
@@ -36,11 +40,11 @@ class Palo:
     def __str__(self) -> str:
         return self.palo()
 
+    def palo(self) -> str:
+        return self.__palo
 
-PICAS = Palo('picas')
-DIAMANTES = Palo('diamantes')
-TREBOLES = Palo('tréboles')
-CORAZONES = Palo('corazones')
+    def valor(self) -> int:
+        return self.__valor
 
 class Carta:
     def __init__(self, _numero: Numero, _palo: Palo) -> None:
@@ -68,19 +72,21 @@ class Carta:
     def palo(self) -> Palo:
         return self.__palo
 
-    def valor(self) -> int:
-        num = self.numero().numero()
-        try:
-            return int(num)
-        except ValueError:
-            return {'J': 11, 'Q': 12, 'K': 13, 'As': 14}[num]
+    # def valor(self) -> int:
+    #     return self.numero().valor()
 
-    def comparar(self, otra) -> int:
-        if self.valor() < otra.valor():
-            return -1
-        if self.valor() == otra.valor():
-            return 0
-        return 1
+    # def comparar(self, otra) -> int:
+    #     if self.valor() < otra.valor():
+    #         return -1
+    #     if self.valor() > otra.valor():
+    #         return +1
+    #     if self.valor() == otra.valor():
+    #         if self.palo().valor() < otra.palo().valor():
+    #             return -1
+    #         if self.palo().valor() > otra.palo().valor():
+    #             return +1
+    #         assert self.palo().valor() != otra.palo().valor()
+    #     return 0
 
 
 class Coleccion:
@@ -94,6 +100,9 @@ class Coleccion:
 
     def __iter__(self):
         return iter(self.__elementos)
+
+    def conjunto(self):
+        return set(self.__elementos)
 
     def copiar(self) -> 'Coleccion':
         return Coleccion(self.__elementos)
@@ -119,14 +128,34 @@ class Coleccion:
 
 
 class Jugador:
-    def __init__(self, _cartas) -> None:
+    def __init__(self, _nombre, _cartas) -> None:
+        self.__nombre = _nombre
         self.__cartas = Coleccion(_cartas)
+        self.__puntos = 0
+
+    def __str__(self) -> str:
+        return self.nombre()
+
+    def __repr__(self) -> str:
+        conjunto = self.__cartas.conjunto()
+        return f'Jugador({self.nombre()!r}, {conjunto!r})'
+
+    def nombre(self):
+        return self.__nombre
+
+    def puntos(self):
+        return self.__puntos
 
     def cartas(self):
         return iter(self.__cartas)
 
     def soltar_una(self) -> Carta:
         return self.__cartas.sacar()
+
+    def incr_puntos(self) -> int:
+        self.__puntos += 1
+        return self.__puntos
+
 
 class Mazo(Coleccion):
     pass
@@ -139,24 +168,26 @@ class Jugada:
             _cartas = _cartas.copy()
         self.__cartas: dict[Jugador,Carta] = _cartas
 
-    # def cartas(self):
-    #     return iter(self.__cartas)
-
     def meter(self, _carta: Carta, _jugador: Jugador):
         self.__cartas[_jugador] = _carta
 
-    def quien_gana(self) -> Jugador:
-        maximo = 0
-        carta_maxima = None
-        ganador = None
+    def quien_gana(self) -> tuple[Jugador, Carta]:
+        ganadores: dict[Jugador,Carta] = {}
+        carta_ganadora = max(self.__cartas.values(), key=lambda x: x.numero().valor())
         for jugador, carta in self.__cartas.items():
-            if carta.valor() > maximo:
-                maximo = carta.valor()
-                carta_maxima = carta
-                ganador = jugador
-        return ganador
+            if carta.numero().valor() == carta_ganadora.numero().valor():
+                ganadores[jugador] = carta
+        assert len(ganadores) > 0
+        if len(ganadores) == 1:
+            return tuple(ganadores.items())[0]
+        ganador, carta_ganadora = max(ganadores.items(), key=lambda t: t[1].palo().valor())
+        return (ganador, carta_ganadora)
 
 
+PICAS = Palo('picas', 1)
+DIAMANTES = Palo('diamantes', 2)
+TREBOLES = Palo('tréboles', 3)
+CORAZONES = Palo('corazones', 4)
 
 baraja = set()
 
@@ -166,7 +197,44 @@ for palo in [CORAZONES, DIAMANTES, TREBOLES, PICAS]:
 
 baraja = Mazo(baraja)
 
-jugador1 = Jugador([baraja.sacar() for _ in range(4)])
-jugador2 = Jugador([baraja.sacar() for _ in range(4)])
+jugador1 = Jugador('Pepe', [baraja.sacar() for _ in range(4)])
+jugador2 = Jugador('María', [baraja.sacar() for _ in range(4)])
 
-carta = jugador1.soltar_una()
+jugadores = [jugador1, jugador2]
+
+print(f'Jugadores: {jugador1}, {jugador2}')
+
+# combinaciones = [(Carta(Numero('5'), x), Carta(Numero('5'), y))
+#                   for x in [PICAS, DIAMANTES, TREBOLES, CORAZONES]
+#                   for y in [PICAS, DIAMANTES, TREBOLES, CORAZONES]
+#                   if x != y]
+
+# for x, y in combinaciones:
+#     mi_jugada = Jugada({jugador1: x, jugador2: y})
+#     print(x, y, mi_jugada.quien_gana()[1])
+
+while True:
+    try:
+        carta1 = jugador1.soltar_una()
+        carta2 = jugador2.soltar_una()
+
+        print(f'{jugador1} juega la carta {carta1}')
+        print(f'{jugador2} juega la carta {carta2}')
+
+        jugada = Jugada({jugador1: carta1, jugador2: carta2})
+        ganador, carta_ganadora = jugada.quien_gana()
+        print(f'Gana {ganador} con la carta {carta_ganadora}')
+        ganador.incr_puntos()
+    except KeyError:
+        break
+
+print(f'{jugador1} tiene {jugador1.puntos()} puntos.')
+print(f'{jugador2} tiene {jugador2.puntos()} puntos.')
+ganador = max(jugadores, key=lambda x: x.puntos())
+puntos = [x.puntos() for x in jugadores]
+maximo_puntos = max(x.puntos() for x in jugadores)
+cuantos = sum(1 for x in jugadores if x.puntos() == maximo_puntos)
+if cuantos > 1:
+    print('Empate.')
+else:
+    print(f'El ganador es {ganador}.')
