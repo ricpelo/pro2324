@@ -1,36 +1,44 @@
 /*
  * ¡Hola, mundo!
  */
+
+import java.util.Scanner;
+
 public class Principal {
     public static void main(String[] args) {
-        String s;
-        int m = 5;
-        float y;
+        Scanner sc = new Scanner(System.in);
+        int numero;
+        boolean mostrado = false;
 
-        if (m > 5) {
-            System.out.println("Es mayor");
-        } else {
-            if (m == 5) {
-                System.out.println("Es igual");
-            } else {
-                System.out.println("Es menor");
+        for (;;) {
+            System.out.print("Introduzca un número entre 0 y 10: ");
+
+            while (!sc.hasNextInt()) {
+                if (!mostrado) {
+                    System.out.println("El dato introducido no es un número entero");
+                    mostrado = true;
+                }
+                sc.next();
             }
+
+            mostrado = false;
+            numero = sc.nextInt();
+
+            if (numero >= 0 && numero <= 10) {
+                break;
+            }
+
+            System.out.println("El número no está comprendido entre 0 y 10");
+        };
+
+        sc.close();
+
+        for (int i = 0; i <= 10; i++) {
+            System.out.print(numero);
+            System.out.print(" x ");
+            System.out.print(i);
+            System.out.print(" = ");
+            System.out.println(numero * i);
         }
-
-        if (m > 5)
-            System.out.println("Es mayor");
-        else if (m == 5)
-            System.out.println("Es igual");
-        else
-            System.out.println("Es menor");
-
-
-
-
-        {
-            int x;
-        }
-        System.out.print("La suma de 2 y 3 vale: ");
-        System.out.println(y);
     }
 }
