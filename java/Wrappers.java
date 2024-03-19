@@ -2,6 +2,8 @@ import java.math.BigDecimal;
 
 public class Wrappers {
     public static void main(String[] args) {
+        Object[] q = new String[5];
+        long[] r = new int[5];
         Object[] o = new Object[] { 5, "hola", true, 3.4, new Object() };
         Number[] n = new Number[] { 1, 2, 3, new BigDecimal("0") };
 
