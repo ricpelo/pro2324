@@ -3,8 +3,8 @@ import java.util.Arrays;
 public class Banco {
     public static void main(String[] args) {
         Cliente antonio = new Cliente("111", "Antonio", "Martínez");
-        Cuenta c1 = new Cuenta(1, antonio);
-        Cuenta c2 = new Cuenta(2, antonio);
+        Cuenta c1 = new Cuenta(antonio);
+        Cuenta c2 = new Cuenta(antonio);
 
         c1.insertarMovimiento("Sueldo", 2000000f);
         c1.insertarMovimiento("Hacienda", -3000000f);
@@ -84,14 +84,15 @@ class Movimiento {
 }
 
 class Cuenta {
+    private static long ultimoNumero = 0L;
     private long numero;
     private Cliente titular;
     private Movimiento[] movimientos = new Movimiento[10];
     private int cantidadMovimientos = 0;
     private float saldo = 0f;
 
-    Cuenta(long numero, Cliente titular) {
-        this.numero = numero;
+    Cuenta(Cliente titular) {
+        numero = ++ultimoNumero;
         setTitular(titular);
     }
 
