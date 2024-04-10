@@ -1,7 +1,7 @@
 class Alumno:
     def __init__(self, nombre) -> None:
         self.__nombre = nombre
-        self.__asignatura = {}
+        self.__asignaturas = {}
 
     def nombre(self):
         return self.__nombre
@@ -11,12 +11,11 @@ class Alumno:
         return self
 
     def matricular(self, asignatura):
-        self.__asignatura = asignatura
+        self.__asignaturas[asignatura] = {}
         return self
 
-    def set_nota(self, asignatura: str, trimestre, nota):
-        self.__asignatura = (trimestre, nota)
-        # print(self.__asignatura)
+    def set_nota(self, asignatura: 'Asignatura', trimestre, nota):
+        self.__asignaturas[asignatura][trimestre] = nota
         return self
 
     def media(self, asignatura):
@@ -38,10 +37,18 @@ class Asignatura:
         self.set_denominacion(denominacion)
         self.set_trimestre(trimestre)
 
-    def set_denominacion(self, denominacion: str) -> str:
+    def __eq__(self, value: object) -> bool:
+        if type(self) != type(value):
+            return NotImplemented
+        return self.denominacion() == value.denominacion()
+
+    def __hash__(self) -> int:
+        return hash(self.denominacion())
+
+    def set_denominacion(self, denominacion: str) -> None:
         self.__denominacion = denominacion
 
-    def set_trimestre(self, trimestre: int) -> int:
+    def set_trimestre(self, trimestre: int) -> None:
         self.__trimestre = trimestre
 
     def denominacion(self) -> str:
