@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Banco {
     public static void main(String[] args) {
@@ -29,10 +30,38 @@ class Cliente {
     private String nombre;
     private String apellidos;
 
-    public Cliente(String dni, String nombre, String apellidos) {
+    Cliente(String dni, String nombre, String apellidos) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellidos = apellidos;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        // if (obj == null) {
+        //     return false;
+        // }
+
+        if (!(obj instanceof Cliente)) {
+            return false;
+        }
+
+        // if (getClass() != obj.getClass()) {
+        //     return false;
+        // }
+
+        Cliente c = (Cliente) obj;
+
+        return Objects.equals(dni, c.dni);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dni);
     }
 
     public String getDni() {
@@ -94,6 +123,26 @@ class Cuenta {
     Cuenta(Cliente titular) {
         numero = ++ultimoNumero;
         setTitular(titular);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Cuenta)) {
+            return false;
+        }
+
+        Cuenta c = (Cuenta) obj;
+
+        return numero == c.numero;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numero);
     }
 
     private void setTitular(Cliente titular) {

@@ -44,6 +44,10 @@ class Derivada extends Base {
 
 public class Animales {
     public static void main(String[] args) {
+
+        Number[] n = new Integer[5];
+        Number[] m = { 1, 2, 3, 4, 5 };
+
         Derivada d = new Derivada();
         Base b = new Derivada();
         System.out.println(b.hola("Pepe"));

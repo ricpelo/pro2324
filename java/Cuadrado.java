@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Cuadrado {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int[][] cuadrado;
+        Number[][] cuadrado;
         int fila, col, n;
 
         for (;;) {
@@ -22,7 +22,7 @@ public class Cuadrado {
         sc.close();
 
         // Crear el cuadrado mágico:
-        cuadrado = new int[n][n];
+        cuadrado = new Integer[n][n];
         fila = 0;
         col = n / 2;
 
@@ -31,7 +31,7 @@ public class Cuadrado {
             int fila_ant = fila, col_ant = col;
             fila = (fila > 0) ? fila - 1 : n - 1;
             col = (col < n - 1) ? col + 1 : 0;
-            if (cuadrado[fila][col] != 0) {
+            if (cuadrado[fila][col] != null && cuadrado[fila][col].intValue() != 0) {
                 fila = fila_ant + 1;
                 col = col_ant;
             }
@@ -52,9 +52,8 @@ public class Cuadrado {
         for (int i = 0; i < n; i++) {
             suma = 0;
             for (int j = 0; j < n; j++) {
-                suma += cuadrado[i][j];
+                suma += cuadrado[i][j].intValue();
             }
-            System.out.printf("%3s", suma);
         }
 
         System.out.println();
@@ -62,26 +61,21 @@ public class Cuadrado {
         for (int i = 0; i < n; i++) {
             suma = 0;
             for (int j = 0; j < n; j++) {
-                suma += cuadrado[j][i];
+                suma += cuadrado[j][i].intValue();
             }
-            System.out.printf("%3s", suma);
         }
 
         System.out.println();
         suma = 0;
 
         for (int i = 0; i < n; i++) {
-            suma += cuadrado[i][i];
+            suma += cuadrado[i][i].intValue();
         }
-
-        System.out.println(suma);
 
         suma = 0;
 
         for (int i = 0; i < n; i++) {
-            suma += cuadrado[i][n - i - 1];
+            suma += cuadrado[i][n - i - 1].intValue();
         }
-
-        System.out.println(suma);
     }
 }
