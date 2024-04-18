@@ -4,7 +4,21 @@ import java.util.Objects;
 
 public class TiendaOnline {
     public static void main(String[] args) {
-        //
+        Cliente rosa = new Cliente("123", "Rosa", "González");
+        Articulo televisor = new Articulo(
+            123,
+            "Televisor",
+            new BigDecimal(399).setScale(2)
+        );
+        Articulo grafica = new Articulo(
+            765,
+            "Tarjeta gráfica",
+            new BigDecimal(239).setScale(2)
+        );
+        Factura f = new Factura(10, rosa);
+        f.insertarLinea(televisor, 2);
+        f.insertarLinea(grafica, 1);
+        f.imprimir();
     }
 }
 
@@ -230,10 +244,34 @@ class Factura {
 
         for (int i = 0; i < cantidadLineas; i++) {
             BigDecimal importe = new BigDecimal(String.valueOf(lineas[i].getCantidad())).setScale(2);
-            importe = importe.multiply(lineas[i].getArticulo().getPrecio());
-            total = total.add(importe);
+            importe = importe.multiply(lineas[i].getArticulo().getPrecio()).setScale(2);
+            total = total.add(importe).setScale(2);
         }
 
         return total;
+    }
+
+    public void imprimir() {
+        BigDecimal total = new BigDecimal("0").setScale(2);
+
+        System.out.println("Factura número: " + numero);
+        System.out.println("Cliente: " + cliente.getDni() + ' ' + cliente.getNombre() + ' ' + cliente.getApellidos());
+        System.out.println();
+        System.out.println("Código Denominación      Cantidad Precio Importe");
+        System.out.println("------------------------------------------------");
+
+        for (int i = 0; i < cantidadLineas; i++) {
+            long cod = lineas[i].getArticulo().getCodigo();
+            String den = lineas[i].getArticulo().getDenominacion();
+            int cant = lineas[i].getCantidad();
+            String prec = lineas[i].getArticulo().getPrecio().toString();
+            BigDecimal importe = new BigDecimal(String.valueOf(lineas[i].getCantidad())).setScale(2);
+            importe = importe.multiply(lineas[i].getArticulo().getPrecio()).setScale(2);
+            String imp = importe.toString();
+            total = total.add(importe).setScale(2);
+            System.out.printf("%6d %-10s\t%2d        %-6s  %-7s\n", cod, den, cant, prec, imp);
+        }
+        System.out.println("------------------------------------------------");
+        System.out.println("Total factura: " + total.toString());
     }
 }
