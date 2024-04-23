@@ -1,118 +1,10 @@
+package cuentas;
+
 import java.util.Arrays;
 import java.util.Objects;
+import clientes.Cliente;
 
-public class Banco {
-    public static void main(String[] args) {
-        Cliente antonio = new Cliente("111", "Antonio", "Martínez");
-        Cuenta c1 = new Cuenta(antonio);
-        Cuenta c2 = new Cuenta(antonio);
-
-        c1.insertarMovimiento("Sueldo", 2000000f);
-        c1.insertarMovimiento("Hacienda", -3000000f);
-        c1.insertarMovimiento("Lotería", 1500000f);
-
-        c2.insertarMovimiento("Apertura", 10f);
-        c2.insertarMovimiento("Ingreso", 50f);
-        c2.insertarMovimiento("Reintegro", -25f);
-
-        System.out.println("El saldo de c1 es " + c1.getSaldo());
-        System.out.println("El saldo de c2 es " + c2.getSaldo());
-
-        c1.mostrarMovimientos();
-        System.out.println();
-        c1.mostrarMovimientosDescendente();
-
-    }
-}
-
-class Cliente {
-    private String dni;
-    private String nombre;
-    private String apellidos;
-
-    Cliente(String dni, String nombre, String apellidos) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        // if (obj == null) {
-        //     return false;
-        // }
-
-        if (!(obj instanceof Cliente)) {
-            return false;
-        }
-
-        // if (getClass() != obj.getClass()) {
-        //     return false;
-        // }
-
-        Cliente c = (Cliente) obj;
-
-        return Objects.equals(dni, c.dni);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(dni);
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-}
-
-class Movimiento {
-    private String concepto;
-    private float cantidad;
-
-    Movimiento(String concepto, float cantidad) {
-        this.concepto = concepto;
-        this.cantidad = cantidad;
-    }
-
-    Movimiento(Movimiento movimiento) {
-        concepto = movimiento.getConcepto();
-        cantidad = movimiento.getCantidad();
-    }
-
-    public String getConcepto() {
-        return concepto;
-    }
-
-    public float getCantidad() {
-        return cantidad;
-    }
-}
-
-class Cuenta {
+public class Cuenta implements Cloneable {
     private static long ultimoNumero = 0L;
     private long numero;
     private Cliente titular;
@@ -120,9 +12,24 @@ class Cuenta {
     private int cantidadMovimientos = 0;
     private float saldo = 0f;
 
-    Cuenta(Cliente titular) {
+    public Cuenta(Cliente titular) {
         numero = ++ultimoNumero;
         setTitular(titular);
+    }
+
+    Cuenta(Cuenta otra) {
+        numero = otra.numero;
+        titular = otra.titular;
+        movimientos = otra.movimientos.clone();
+        cantidadMovimientos = otra.cantidadMovimientos;
+        saldo = otra.saldo;
+    }
+
+    @Override
+    protected Cuenta clone() throws CloneNotSupportedException {
+        Cuenta res = (Cuenta) super.clone();
+        res.movimientos = this.movimientos.clone();
+        return res;
     }
 
     @Override
