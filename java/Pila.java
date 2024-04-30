@@ -6,7 +6,7 @@ public class Pila<T> {
     private List<T> elementos;
 
     public Pila() {
-        elementos = new LinkedList<>();
+        elementos = new ArrayList<>();
     }
 
     public boolean esVacia() {

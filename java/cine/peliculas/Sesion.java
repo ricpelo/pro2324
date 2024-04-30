@@ -3,7 +3,6 @@ package peliculas;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
-
 import salas.Sala;
 
 public class Sesion {

@@ -1,20 +1,22 @@
 package salas;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Sala {
     private int numero;
-    private Asiento[] asientos;
+    private List<Asiento> asientos;
 
     public Sala(int numero, int cantidadAsientos) {
         this.numero = numero;
-        asientos = new Asiento[cantidadAsientos];
+        asientos = new ArrayList<>(cantidadAsientos);
 
         for (int i = 0; i < cantidadAsientos; i++) {
             BigDecimal extra = new BigDecimal((i % 2 == 0) ? "0" : "2");
             extra.setScale(2);
-            asientos[i] = new Asiento(i + 1, this, extra);
+            asientos.add(new Asiento(i + 1, this, extra));
         }
     }
 
@@ -42,10 +44,10 @@ public class Sala {
     }
 
     public int cantidadAsientos() {
-        return asientos.length;
+        return asientos.size();
     }
 
     public Asiento getAsiento(int numeroAsiento) {
-        return asientos[numeroAsiento - 1];
+        return asientos.get(numeroAsiento - 1);
     }
 }
