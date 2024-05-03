@@ -2,10 +2,11 @@ package salas;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class Sala {
+public class Sala implements Comparable<Sala>, Iterable<Asiento> {
     private int numero;
     private List<Asiento> asientos;
 
@@ -18,6 +19,18 @@ public class Sala {
             extra.setScale(2);
             asientos.add(new Asiento(i + 1, this, extra));
         }
+    }
+
+    @Override
+    public Iterator<Asiento> iterator() {
+        return asientos.iterator();
+    }
+
+    @Override
+    public int compareTo(Sala otra) {
+        return numero - otra.numero;
+        // return Integer.valueOf(numero).
+        //     compareTo(Integer.valueOf(otra.numero));
     }
 
     @Override

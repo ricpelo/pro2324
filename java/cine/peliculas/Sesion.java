@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 import salas.Sala;
 
-public class Sesion {
+public class Sesion implements Comparable<Sesion> {
     private Date fechaHora;
     private Sala sala;
     private BigDecimal precioBase;
@@ -20,6 +20,15 @@ public class Sesion {
         this.fechaHora = (Date) fechaHora.clone();
         this.sala = sala;
         this.precioBase = precioBase.setScale(2);
+    }
+
+    @Override
+    public int compareTo(Sesion otra) {
+        int comparaFechaHora = fechaHora.compareTo(otra.fechaHora);
+        if (comparaFechaHora == 0) {
+            return sala.compareTo(otra.sala);
+        }
+        return comparaFechaHora;
     }
 
     @Override

@@ -3,7 +3,7 @@ package salas;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Asiento {
+public class Asiento implements Comparable<Asiento> {
     private int numero;
     private BigDecimal extra;
     private Sala sala;
@@ -16,6 +16,15 @@ public class Asiento {
 
     public int getNumero() {
         return numero;
+    }
+
+    @Override
+    public int compareTo(Asiento otro) {
+        int comparaNumero = numero - otro.numero;
+        if (comparaNumero == 0) {
+            return sala.compareTo(otro.sala);
+        }
+        return comparaNumero;
     }
 
     public Sala getSala() {

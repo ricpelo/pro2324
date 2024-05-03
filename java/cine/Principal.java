@@ -1,8 +1,6 @@
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-
 import peliculas.Pelicula;
 import peliculas.Sesion;
 import salas.Sala;
@@ -19,7 +17,7 @@ public class Principal {
             dos,
             new BigDecimal("4.50").setScale(2)
         );
-        Sesion sesion = starwars.getSesion(0);
+        Sesion sesion = starwars.iterator().next();
         Entrada entrada = new Entrada(sesion, sesion.getSala().getAsiento(2));
         System.out.println(entrada.getPrecio());
     }

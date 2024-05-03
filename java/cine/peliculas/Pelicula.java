@@ -1,22 +1,23 @@
 package peliculas;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import salas.Sala;
 
-public class Pelicula {
+public class Pelicula implements Iterable<Sesion> {
     private static long ultimoCodigo = 0L;
     private long codigo;
-    private List<Sesion> sesiones;
+    private Set<Sesion> sesiones;
     private String titulo;
 
     public Pelicula(String titulo) {
         this.titulo = titulo;
         codigo = ++ultimoCodigo;
-        sesiones = new ArrayList<>();
+        sesiones = new TreeSet<>();
     }
 
     @Override
@@ -38,6 +39,11 @@ public class Pelicula {
         return Objects.hash(codigo);
     }
 
+    @Override
+    public Iterator<Sesion> iterator() {
+        return sesiones.iterator();
+    }
+
     public long getCodigo() {
         return codigo;
     }
@@ -48,9 +54,6 @@ public class Pelicula {
 
     public void insertarSesion(Date fechaHora, Sala sala, BigDecimal precioBase) {
         Sesion sesion = new Sesion(fechaHora, sala, precioBase);
-        if (sesiones.contains(sesion)) {
-            return;
-        }
         sesiones.add(sesion);
     }
 
@@ -61,9 +64,5 @@ public class Pelicula {
 
     public int getCantidadSesiones() {
         return sesiones.size();
-    }
-
-    public Sesion getSesion(int numeroSesion) {
-        return sesiones.get(numeroSesion);
     }
 }
