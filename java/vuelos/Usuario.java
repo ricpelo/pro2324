@@ -1,9 +1,13 @@
 import java.util.Set;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Objects;
 
 public class Usuario implements Iterable<Reserva> {
+    private static Map<String, Usuario> usuarios = new HashMap<>();
+
     private String email;
     private String password;
     private Set<Reserva> reservas;
@@ -12,6 +16,11 @@ public class Usuario implements Iterable<Reserva> {
         this.email = email;
         this.password = password;
         reservas = new LinkedHashSet<>();
+        usuarios.put(email, this);
+    }
+
+    public static Usuario find(String email) {
+        return usuarios.get(email);
     }
 
     public String getEmail() {
@@ -56,13 +65,6 @@ public class Usuario implements Iterable<Reserva> {
     }
 
     public void reservar(Vuelo vuelo, int asiento) {
-        for (Reserva reserva : vuelo) {
-            if (reserva.getAsiento() > asiento) {
-                break;
-            } else if (reserva.getAsiento() == asiento) {
-                throw new IllegalArgumentException("Ya hay una reserva para ese vuelo con ese asiento.");
-            }
-        }
         Reserva reserva = new Reserva(vuelo, this, asiento);
         reservas.add(reserva);
     }

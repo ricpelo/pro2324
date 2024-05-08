@@ -58,4 +58,25 @@ public class Reserva implements Comparable<Reserva> {
         }
         return unCodigo.compareTo(otroCodigo);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(vuelo.getCodigo());
+        sb.append(' ');
+        sb.append(asiento);
+        sb.append(' ');
+        sb.append(vuelo.getOrigen());
+        sb.append("->");
+        sb.append(vuelo.getDestino());
+        sb.append(' ');
+        sb.append(vuelo.getCompania());
+        sb.append(' ');
+        sb.append(vuelo.getSalida());
+        sb.append(' ');
+        sb.append(vuelo.getLlegada());
+        sb.append(' ');
+        sb.append(vuelo.getPrecio());
+        return sb.toString();
+    }
 }

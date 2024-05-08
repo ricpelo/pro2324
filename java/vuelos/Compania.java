@@ -1,33 +1,17 @@
-import java.util.Objects;
-
-public class Compania {
+public class Compania extends ActiveRecord {
     private String nombre;
 
-    public Compania(String nombre) {
+    public Compania(String codigo, String nombre) {
+        super(codigo);
         this.nombre = nombre;
+    }
+
+    public static Compania find(String codigo) {
+        return (Compania) ActiveRecord.find(codigo);
     }
 
     public String getNombre() {
         return nombre;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof Compania)) {
-            return false;
-        }
-
-        Compania compania = (Compania) obj;
-        return this.nombre.equals(compania.nombre);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nombre);
     }
 
     @Override

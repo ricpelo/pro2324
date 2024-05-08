@@ -1,11 +1,16 @@
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class Vuelo implements Iterable<Reserva> {
+public class Vuelo implements Iterable<Reserva>, Comparable<Vuelo> {
+    private static Map<String, Vuelo> vuelos = new HashMap<>();
+
     private int plazas;
     private String codigo;
     private Aeropuerto origen;
@@ -15,7 +20,7 @@ public class Vuelo implements Iterable<Reserva> {
     private Date llegada;
     private BigDecimal precio;
 
-    private Set<Reserva> reservas;
+    private Map<Integer,Reserva> reservas;
 
     public Vuelo(
             String codigo,
@@ -35,7 +40,12 @@ public class Vuelo implements Iterable<Reserva> {
         this.salida = salida;
         this.llegada = llegada;
         this.precio = precio.setScale(2);
-        reservas = new TreeSet<>();
+        reservas = new TreeMap<>();
+        vuelos.put(codigo, this);
+    }
+
+    public static Vuelo find(String codigo) {
+        return vuelos.get(codigo);
     }
 
     @Override
@@ -59,7 +69,15 @@ public class Vuelo implements Iterable<Reserva> {
 
     @Override
     public Iterator<Reserva> iterator() {
-        return reservas.iterator();
+        return reservas.values().iterator();
+    }
+
+    @Override
+    public int compareTo(Vuelo vuelo) {
+        if (this.equals(vuelo)) {
+            return 0;
+        }
+        return this.getSalida().compareTo(vuelo.getSalida());
     }
 
     public int getPlazas() {
@@ -95,9 +113,14 @@ public class Vuelo implements Iterable<Reserva> {
     }
 
     public void registrarReserva(Reserva reserva) {
-        if (reservas.contains(reserva)) {
+        if (reservas.get(reserva.getAsiento()) != null) {
             throw new IllegalArgumentException("El asiento ya está ocupado.");
         }
-        reservas.add(reserva);
+        reservas.put(reserva.getAsiento(), reserva);
+    }
+
+    @Override
+    public String toString() {
+        return codigo;
     }
 }
