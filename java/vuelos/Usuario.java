@@ -56,6 +56,14 @@ public class Usuario implements Iterable<Reserva> {
     }
 
     public void reservar(Vuelo vuelo, int asiento) {
-        reservas.add(new Reserva(vuelo, this, asiento));
+        for (Reserva reserva : vuelo) {
+            if (reserva.getAsiento() > asiento) {
+                break;
+            } else if (reserva.getAsiento() == asiento) {
+                throw new IllegalArgumentException("Ya hay una reserva para ese vuelo con ese asiento.");
+            }
+        }
+        Reserva reserva = new Reserva(vuelo, this, asiento);
+        reservas.add(reserva);
     }
 }
