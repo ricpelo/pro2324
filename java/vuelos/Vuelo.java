@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,7 +10,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Vuelo implements Iterable<Reserva>, Comparable<Vuelo> {
-    private static Map<String, Vuelo> vuelos = new HashMap<>();
+    private static Map<String, Vuelo> vuelos = new TreeMap<>();
 
     private int plazas;
     private String codigo;
@@ -48,6 +49,33 @@ public class Vuelo implements Iterable<Reserva>, Comparable<Vuelo> {
         return vuelos.get(codigo);
     }
 
+    /**
+     * Devuelve el conjunto de los vuelos disponibles que tienen plazas libres,
+     * ordenado por la fecha de salida.
+     *
+     * @return Los vuelos.
+     */
+    public static Set<Vuelo> all() {
+        Set<Vuelo> res = new TreeSet<Vuelo>();
+
+        for (Vuelo vuelo : vuelos.values()) {
+            if (vuelo.tienePlazasLibres() && vuelo.estaDisponible()) {
+                res.add(vuelo);
+            }
+        }
+
+        return res;
+    }
+
+    public boolean tienePlazasLibres() {
+        return reservas.size() < plazas;
+    }
+
+    public boolean estaDisponible()
+    {
+        return salida.compareTo(new Date()) > 0;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -78,6 +106,10 @@ public class Vuelo implements Iterable<Reserva>, Comparable<Vuelo> {
             return 0;
         }
         return this.getSalida().compareTo(vuelo.getSalida());
+    }
+
+    public boolean asientoOcupado(int asiento) {
+        return reservas.containsKey(asiento);
     }
 
     public int getPlazas() {
@@ -121,6 +153,14 @@ public class Vuelo implements Iterable<Reserva>, Comparable<Vuelo> {
 
     @Override
     public String toString() {
-        return codigo;
+        StringBuilder sb = new StringBuilder();
+        sb.append(getCodigo());
+        sb.append(' ');
+        sb.append(getOrigen());
+        sb.append(" -> ");
+        sb.append(getDestino());
+        sb.append(' ');
+        sb.append(getSalida());
+        return sb.toString();
     }
 }

@@ -62,21 +62,20 @@ public class Reserva implements Comparable<Reserva> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(vuelo.getCodigo());
+        sb.append(vuelo);
         sb.append(' ');
         sb.append(asiento);
-        sb.append(' ');
-        sb.append(vuelo.getOrigen());
-        sb.append("->");
-        sb.append(vuelo.getDestino());
-        sb.append(' ');
-        sb.append(vuelo.getCompania());
-        sb.append(' ');
-        sb.append(vuelo.getSalida());
-        sb.append(' ');
-        sb.append(vuelo.getLlegada());
-        sb.append(' ');
-        sb.append(vuelo.getPrecio());
         return sb.toString();
+    }
+
+    public void mostrarDetalle() {
+        System.out.println("Código vuelo: " + getVuelo().getCodigo());
+        System.out.println("Asiento: " + getAsiento());
+        System.out.println("Origen: " + getVuelo().getOrigen());
+        System.out.println("Destino: " + getVuelo().getDestino());
+        System.out.println("Compañía: " + getVuelo().getCompania());
+        System.out.println("Salida: " + getVuelo().getSalida());
+        System.out.println("Llegada: " + getVuelo().getLlegada());
+        System.out.println("Precio: " + getVuelo().getPrecio());
     }
 }
