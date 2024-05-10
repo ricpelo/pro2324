@@ -67,6 +67,10 @@ public class Vuelo implements Iterable<Reserva>, Comparable<Vuelo> {
         return res;
     }
 
+    public int cantidadReservas() {
+        return reservas.size();
+    }
+
     public boolean tienePlazasLibres() {
         return reservas.size() < plazas;
     }

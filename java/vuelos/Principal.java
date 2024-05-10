@@ -28,25 +28,6 @@ public class Principal {
 
         pepe.reservar(v1, 5);
 
-        // for (Reserva reserva : pepe) {
-        //     System.out.println("Código vuelo: " + reserva.getVuelo().getCodigo());
-        //     System.out.println("Asiento: " + reserva.getAsiento());
-        //     System.out.println("Origen: " + reserva.getVuelo().getOrigen());
-        //     System.out.println("Destino: " + reserva.getVuelo().getDestino());
-        //     System.out.println("Compañía: " + reserva.getVuelo().getCompania());
-        // }
-
-        // System.out.println();
-
-        // for (Reserva reserva : v1) {
-        //     System.out.println("Código vuelo: " + v1.getCodigo());
-        //     System.out.println("Asiento: " + reserva.getAsiento());
-        //     System.out.println("Origen: " + reserva.getVuelo().getOrigen());
-        //     System.out.println("Destino: " + reserva.getVuelo().getDestino());
-        //     System.out.println("Compañía: " + reserva.getVuelo().getCompania());
-        //     System.out.println("Usuario: " + reserva.getUsuario());
-        // }
-
         // loguear al usuario
         Usuario usuario = loguear();
         Scanner sc = new Scanner(System.in);
@@ -60,6 +41,7 @@ public class Principal {
             System.out.print("Introduzca opción: ");
             int opcion = sc.nextInt();
             sc.nextLine();
+            System.out.println();
             switch (opcion) {
                 case 1:
                     crearReserva(usuario);
@@ -68,7 +50,7 @@ public class Principal {
                     mostrarReservas(usuario);
                     break;
                 default:
-                    sc.close();
+                    // sc.close();
                     return;
             }
         }
@@ -78,7 +60,8 @@ public class Principal {
         Set<Vuelo> vuelos = Vuelo.all();
         System.out.println();
         for (Vuelo vuelo : vuelos) {
-            System.out.println(vuelo);
+            System.out.print(vuelo);
+            System.out.println(" " + (vuelo.getPlazas() - vuelo.cantidadReservas()));
         }
         System.out.println();
 
@@ -89,7 +72,6 @@ public class Principal {
             System.out.print("Introduzca el código del vuelo a reservar (0 para salir): ");
             String codigo = sc.nextLine().strip();
             if (codigo.equals("0")) {
-                sc.close();
                 return;
             }
             vuelo = Vuelo.find(codigo);
@@ -107,7 +89,7 @@ public class Principal {
             System.out.print("Introduzca el asiento deseado: ");
             asiento = sc.nextInt();
             sc.nextLine();
-            if (asiento < 0 || asiento > vuelo.getPlazas()) {
+            if (asiento <= 0 || asiento > vuelo.getPlazas()) {
                 System.out.println("Asiento incorrecto.");
             } else if (vuelo.asientoOcupado(asiento)) {
                 System.out.println("Asiento ya ocupado.");
@@ -116,32 +98,30 @@ public class Principal {
             }
         }
 
-        sc.close();
+        // sc.close();
         usuario.reservar(vuelo, asiento);
-        System.out.println("Reserva creada.");
+        System.out.println("Reserva creada.\n");
     }
 
     private static Usuario loguear() {
         Usuario usuario;
 
-        return Usuario.find("pepe@gmail.com");
+        for (;;) {
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Correo del usuario: ");
+            String email = sc.nextLine();
+            System.out.print("Contraseña: ");
+            String password = sc.nextLine();
+            usuario = Usuario.find(email);
+            if (usuario != null) {
+                if (usuario.getPassword().equals(password)) {
+                    break;
+                }
+            }
+            System.out.println("Usuario o contraseña incorrectos.");
+        }
 
-        // for (;;) {
-        //     Scanner sc = new Scanner(System.in);
-        //     System.out.print("Correo del usuario: ");
-        //     String email = sc.nextLine();
-        //     System.out.print("Contraseña: ");
-        //     String password = sc.nextLine();
-        //     usuario = Usuario.find(email);
-        //     if (usuario != null) {
-        //         if (usuario.getPassword().equals(password)) {
-        //             break;
-        //         }
-        //     }
-        //     System.out.println("Usuario o contraseña incorrectos.");
-        // }
-
-        // return usuario;
+        return usuario;
     }
 
     public static void mostrarReservas(Usuario usuario)
@@ -149,7 +129,8 @@ public class Principal {
         Scanner sc = new Scanner(System.in);
 
         for (;;) {
-            System.out.println("N.º Vuelo Asiento Origen -> Destino Salida");
+            System.out.println();
+            System.out.println("N.º Vuelo Origen -> Destino Salida Asiento");
             System.out.println("------------------------------------------");
             int cantidad = 0;
             Map<Integer, Reserva> reservas = new HashMap<>();
@@ -159,13 +140,13 @@ public class Principal {
                 reservas.put(cantidad, reserva);
             }
 
-            System.out.print("Seleccione la reserva (0 para salir): ");
+            System.out.print("\nSeleccione la reserva (0 para salir): ");
             int numReserva = sc.nextInt();
             sc.nextLine();
             if (numReserva == 0) {
                 break;
             }
-            if (numReserva < 0 || numReserva > cantidad) {
+            if (numReserva <= 0 || numReserva > cantidad) {
                 System.out.println("Selección incorrecta.");
             }
             Reserva reserva = reservas.get(numReserva);
@@ -174,6 +155,6 @@ public class Principal {
             sc.nextLine();
         }
 
-        sc.close();
+        // sc.close();
     }
 }
