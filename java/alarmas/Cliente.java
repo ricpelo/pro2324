@@ -29,7 +29,7 @@ public class Cliente {
         alarmas = new HashSet<>();
     }
 
-    public Set<Map.Entry<String, String>> getMoviles() {
+    public Set<Map.Entry<String, Movil>> getMoviles() {
         return moviles.entrySet();
     }
 
@@ -54,7 +54,7 @@ public class Cliente {
     }
 
     public void asociarMovil(String numero, String nombre) {
-        moviles.put(numero, nombre);
+        moviles.put(numero, new Movil(numero, nombre));
     }
 
     public void quitarMovil(String numero) {
