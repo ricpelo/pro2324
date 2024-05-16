@@ -1,9 +1,16 @@
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class Alarma {
+    public static long ultimoNumero = 0L;
+
     public final int MAX_SENSORES = 64;
 
+    private long numero;
     private String marca;
     private String modelo;
     private Ubicacion ubicacion;
@@ -11,6 +18,7 @@ public class Alarma {
     private String palabraClave;
 
     Map<Integer, Sensor> sensores;
+    Map<Long, Incidencia> incidencias;
 
     public Alarma(
         String marca,
@@ -19,21 +27,46 @@ public class Alarma {
         Comisaria comisaria,
         String palabraClave
     ) {
+        this.numero = ++ultimoNumero;
         this.marca = marca;
         this.modelo = modelo;
         this.ubicacion = ubicacion;
         this.comisaria = comisaria;
         setPalabraClave(palabraClave);
         sensores = new TreeMap<>();
+        incidencias = new LinkedHashMap<>();
     }
 
     public Alarma(Alarma vieja) {
+        this.numero = ++ultimoNumero;
         this.marca = vieja.marca;
         this.modelo = vieja.modelo;
         this.ubicacion = vieja.ubicacion;
         this.comisaria = vieja.comisaria;
         this.palabraClave = vieja.palabraClave;
         this.sensores = new TreeMap<>(vieja.sensores);
+        this.incidencias = new LinkedHashMap<>(vieja.incidencias);
+    }
+
+    public long getNumero() {
+        return numero;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Alarma)) {
+            return false;
+        }
+        Alarma alarma = (Alarma) obj;
+        return this.numero == alarma.numero;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numero);
     }
 
     public Sensor getSensor(int numero) {
@@ -93,12 +126,29 @@ public class Alarma {
         if (getSensor(sensor.getNumero()) != sensor) {
             throw new IllegalArgumentException("El sensor no es de esa alarma.");
         }
-        new Incidencia(sensor);
+        Incidencia incidencia = new Incidencia(sensor);
+        incidencias.put(incidencia.getNumero(), incidencia);
+    }
+
+    public void eliminarIncidencia(long numero) {
+        if (!incidencias.containsKey(numero)) {
+            throw new IllegalArgumentException("La incidencia no existe.");
+        }
+        incidencias.remove(numero);
     }
 
     private void comprobarNumeroMaximoSensores() {
         if (sensores.size() >= MAX_SENSORES) {
             throw new IllegalArgumentException("No caben más de " + MAX_SENSORES + " sensores en la instalación.");
         }
+    }
+
+    public Collection<Incidencia> getIncidencias() {
+        return incidencias.values();
+    }
+
+    @Override
+    public String toString() {
+        return numero + " - " + marca + modelo;
     }
 }

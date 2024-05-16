@@ -1,9 +1,13 @@
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class Cliente {
+    private static Map<Integer, Cliente> clientes = new HashMap<>();
+
     private int numero;
     private String nif;
     private String nombre;
@@ -11,7 +15,7 @@ public class Cliente {
     private String telefonoFijo;
     private Map<String, Movil> moviles;
 
-    private Set<Alarma> alarmas;
+    private Map<Long, Alarma> alarmas;
 
     public Cliente(
         int numero,
@@ -26,7 +30,16 @@ public class Cliente {
         this.ubicacion = ubicacion;
         this.telefonoFijo = telefonoFijo;
         moviles = new LinkedHashMap<>();
-        alarmas = new HashSet<>();
+        alarmas = new HashMap<>();
+        clientes.put(numero, this);
+    }
+
+    public static Collection<Cliente> all() {
+        return clientes.values();
+    }
+
+    public static Cliente find(int numero) {
+        return clientes.get(numero);
     }
 
     public Set<Map.Entry<String, Movil>> getMoviles() {
@@ -62,10 +75,19 @@ public class Cliente {
     }
 
     public void altaAlarma(Alarma alarma) {
-        alarmas.add(alarma);
+        alarmas.put(alarma.getNumero(), alarma);
     }
 
     public void bajaAlarma(Alarma alarma) {
-        alarmas.remove(alarma);
+        alarmas.remove(alarma.getNumero());
+    }
+
+    public Collection<Alarma> getAlarmas() {
+        return alarmas.values();
+    }
+
+    @Override
+    public String toString() {
+        return numero + " - " + nif + " - " + nombre;
     }
 }
