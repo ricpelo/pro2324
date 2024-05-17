@@ -1,6 +1,5 @@
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -17,8 +16,7 @@ public class Alarma {
     private Comisaria comisaria;
     private String palabraClave;
 
-    Map<Integer, Sensor> sensores;
-    Map<Long, Incidencia> incidencias;
+    private Map<Integer, Sensor> sensores;
 
     public Alarma(
         String marca,
@@ -34,7 +32,6 @@ public class Alarma {
         this.comisaria = comisaria;
         setPalabraClave(palabraClave);
         sensores = new TreeMap<>();
-        incidencias = new LinkedHashMap<>();
     }
 
     public Alarma(Alarma vieja) {
@@ -45,7 +42,6 @@ public class Alarma {
         this.comisaria = vieja.comisaria;
         this.palabraClave = vieja.palabraClave;
         this.sensores = new TreeMap<>(vieja.sensores);
-        this.incidencias = new LinkedHashMap<>(vieja.incidencias);
     }
 
     public long getNumero() {
@@ -76,6 +72,20 @@ public class Alarma {
         return sensores.get(numero);
     }
 
+    public Collection<Sensor> getSensores() {
+        return sensores.values();
+    }
+
+    public Collection<Sensor> getSensores(TipoSensor tipoSensor) {
+        Collection<Sensor> res = new HashSet<>();
+        for (Sensor sensor : getSensores()) {
+            if (sensor.getTipo().equals(tipoSensor)) {
+                res.add(sensor);
+            }
+        }
+        return res;
+    }
+
     public Comisaria getComisaria() {
         return comisaria;
     }
@@ -100,13 +110,13 @@ public class Alarma {
         this.palabraClave = palabraClave;
     }
 
-    public void insertarSensor(int numero, String ubicacion, TipoAlarma tipo) {
+    public void insertarSensor(int numero, String ubicacion, TipoSensor tipo) {
         comprobarNumeroMaximoSensores();
         Sensor sensor = new Sensor(numero, ubicacion, tipo);
         sensores.put(numero, sensor);
     }
 
-    public void insertarSensor(String ubicacion, TipoAlarma tipo) {
+    public void insertarSensor(String ubicacion, TipoSensor tipo) {
         comprobarNumeroMaximoSensores();
         int numero;
         for (numero = 1; !sensores.containsKey(numero); numero++)
@@ -122,21 +132,6 @@ public class Alarma {
         sensores.remove(numero);
     }
 
-    public void insertarIncidencia(Sensor sensor) {
-        if (getSensor(sensor.getNumero()) != sensor) {
-            throw new IllegalArgumentException("El sensor no es de esa alarma.");
-        }
-        Incidencia incidencia = new Incidencia(sensor);
-        incidencias.put(incidencia.getNumero(), incidencia);
-    }
-
-    public void eliminarIncidencia(long numero) {
-        if (!incidencias.containsKey(numero)) {
-            throw new IllegalArgumentException("La incidencia no existe.");
-        }
-        incidencias.remove(numero);
-    }
-
     private void comprobarNumeroMaximoSensores() {
         if (sensores.size() >= MAX_SENSORES) {
             throw new IllegalArgumentException("No caben más de " + MAX_SENSORES + " sensores en la instalación.");
@@ -144,7 +139,11 @@ public class Alarma {
     }
 
     public Collection<Incidencia> getIncidencias() {
-        return incidencias.values();
+        Collection<Incidencia> res = new HashSet<>();
+        for (Sensor sensor : getSensores()) {
+            res.addAll(sensor.getIncidencias());
+        }
+        return res;
     }
 
     @Override

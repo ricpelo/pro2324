@@ -1,3 +1,5 @@
+import java.util.Collection;
+
 public class Principal {
     public static void main(String[] args) {
         // Ejercicio 4:
@@ -27,5 +29,34 @@ public class Principal {
                 }
             }
         }
+
+        // Ejercicio 7:
+        for (Alarma alarma : Cliente.find(485102).getAlarmas()) {
+            Collection<Sensor> vistaSensores = alarma.getSensores();
+            for (Sensor sensor : vistaSensores) {
+                if (sensor.getCantidadIncidencias() == 0) {
+                    vistaSensores.remove(sensor);
+                }
+            }
+        }
+
+        // Ejercicio 8:
+        int minimaCantidadMovimiento = Integer.MAX_VALUE;
+        Cliente objetivo = null;
+        for (Cliente cliente : Cliente.all()) {
+            int cuantosMovimiento = 0;
+            for (Alarma alarma : cliente.getAlarmas()) {
+                cuantosMovimiento += alarma.getSensores(TipoSensor.MOVIMIENTO).size();
+            }
+            if (cuantosMovimiento < minimaCantidadMovimiento) {
+                minimaCantidadMovimiento = cuantosMovimiento;
+                objetivo = cliente;
+            } else if (cuantosMovimiento == minimaCantidadMovimiento) {
+                if (cliente.getNumero() < objetivo.getNumero()) {
+                    objetivo = cliente;
+                }
+            }
+        }
+        objetivo.asociarMovil("645888102", "Natalia Rodríguez García" );
     }
 }

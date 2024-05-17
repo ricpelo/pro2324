@@ -9,7 +9,7 @@ public class Incidencia {
     private Date fechaHora;
     private Sensor sensor;
 
-    Set<Actuacion> actuaciones;
+    private Set<Actuacion> actuaciones;
 
     public Incidencia(Sensor sensor) {
         fechaHora = new Date();

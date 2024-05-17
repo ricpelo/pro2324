@@ -1,3 +1,3 @@
-public enum TipoAlarma {
+public enum TipoSensor {
     MOVIMIENTO, HUMO, APERTURA
 }
