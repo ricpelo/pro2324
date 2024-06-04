@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<raiz>
+    <libros>
+        <libro id="237">
+            <titulo>La historia interminable</titulo>
+            <autor>Michael Ende</autor>
+            <ejemplares>
+                <ejemplar id="1">
+                    <prestamo lector="2" />
+                </ejemplar>
+            </ejemplares>
+        </libro>
+        <libro id="662">
+            <titulo>Momo</titulo>
+            <autor>Michael Ende</autor>
+            <ejemplares>
+                <ejemplar id="2">
+                </ejemplar>
+            </ejemplares>
+        </libro>
+        <libro id="35">
+            <titulo>Don Quijote de la Mancha</titulo>
+            <autor>Miguel de Cervantes</autor>
+        </libro>
+    </libros>
+    <lectores>
+        <lector id="1">
+            <nombre>Juan Pérez Martínez</nombre>
+        </lector>
+        <lector id="2">
+            <nombre>María González Ruiz</nombre>
+        </lector>
+    </lectores>
+</raiz>
