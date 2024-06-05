@@ -6,7 +6,9 @@
             <autor>Michael Ende</autor>
             <ejemplares>
                 <ejemplar id="1">
-                    <prestamo lector="2" />
+                    <prestamo lector="2">
+                        <fecha>2024-05-04</fecha>
+                    </prestamo>
                 </ejemplar>
             </ejemplares>
         </libro>
