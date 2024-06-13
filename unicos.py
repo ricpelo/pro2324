@@ -28,7 +28,7 @@ def unicos(sec) -> set[int]:
         if len(sec) == 0:
             return acc
         if sec[0] in acc:
-            return unicos_aux(sec[1:], acc)
+            return unicos_aux(sec[1:], acc - {sec[0]})
         return unicos_aux(sec[1:], acc | {sec[0]})
 
     return unicos_aux(sec, set())
